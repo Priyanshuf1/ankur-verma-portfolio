@@ -77,8 +77,8 @@ export default function App() {
     if (!activeEl || isAnimating.current) return;
 
     const { innerWidth, innerHeight } = window;
-    const x = (e.clientX / innerWidth - 0.5) * 8; // Max +-4deg
-    const y = (e.clientY / innerHeight - 0.5) * 8;
+    const x = (e.clientX / innerWidth - 0.5) * 6; // Max +-3deg for classy feel
+    const y = (e.clientY / innerHeight - 0.5) * 6;
 
     gsap.to(activeEl, {
       rotateY: x,
@@ -131,20 +131,18 @@ export default function App() {
     });
 
     if (direction === 'next') {
-      // Current slide zooms out into backdrop depth
       timeline.to(currentEl, {
-        scale: 1.3,
+        scale: 1.25,
         opacity: 0,
         filter: 'blur(16px)',
         duration: 1.0,
         ease: 'power3.inOut'
       }, 0);
 
-      // Target slide EMERGES FROM INSIDE (Scale 0.3 -> 1, Circle Mask 0% -> 150%)
       timeline.fromTo(
         targetEl,
         {
-          scale: 0.3,
+          scale: 0.35,
           opacity: 0,
           filter: 'blur(30px)',
           clipPath: 'circle(0% at 50% 50%)'
@@ -160,9 +158,8 @@ export default function App() {
         0.1
       );
     } else {
-      // Reverse transition
       timeline.to(currentEl, {
-        scale: 0.3,
+        scale: 0.35,
         opacity: 0,
         filter: 'blur(25px)',
         clipPath: 'circle(0% at 50% 50%)',
@@ -173,7 +170,7 @@ export default function App() {
       timeline.fromTo(
         targetEl,
         {
-          scale: 1.3,
+          scale: 1.25,
           opacity: 0,
           filter: 'blur(16px)',
           clipPath: 'circle(150% at 50% 50%)'
@@ -211,7 +208,7 @@ export default function App() {
     }
   };
 
-  // Listen for Mouse Wheel & Gesture Events
+  // Listen for Mouse Wheel & Touch Swipe Events
   useEffect(() => {
     const handleWheel = (e) => {
       e.preventDefault();
@@ -289,9 +286,9 @@ export default function App() {
   return (
     <div 
       onMouseMove={handleMouseMove}
-      className="relative w-screen h-screen overflow-hidden bg-[#070103] text-white select-none perspective-1000"
+      className="relative w-screen h-screen overflow-hidden bg-[#070709] text-white select-none perspective-1000"
     >
-      {/* Background Particle & Geometry Atmosphere */}
+      {/* Background Particle & Classy Atmosphere */}
       <BackgroundVFX />
 
       {/* Interactive Glowing Cursor Follower */}
@@ -305,7 +302,7 @@ export default function App() {
         />
       </div>
 
-      {/* Fixed Viewport Stacked Slide Layers (Emerges from Inside Portal Transition) */}
+      {/* Fixed Viewport Stacked Slide Layers */}
       <div 
         ref={containerRef}
         className="relative z-10 w-full h-full overflow-hidden"
@@ -320,22 +317,6 @@ export default function App() {
               {slideComponent}
             </div>
           </section>
-        ))}
-      </div>
-
-      {/* Right Side Navigation Dots */}
-      <div className="fixed right-3 sm:right-6 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center gap-2.5 bg-black/60 backdrop-blur-md p-2 sm:p-2.5 rounded-full border border-red-900/40 shadow-2xl">
-        {slideTitles.map((title, idx) => (
-          <button
-            key={idx}
-            onClick={() => goToSlide(idx)}
-            title={`Slide ${idx + 1}: ${title}`}
-            className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer ${
-              currentSlide === idx
-                ? 'bg-red-500 scale-140 shadow-[0_0_15px_#ff1a1a]'
-                : 'bg-white/30 hover:bg-white/70 hover:scale-125'
-            }`}
-          />
         ))}
       </div>
 
