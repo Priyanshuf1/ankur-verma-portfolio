@@ -1,52 +1,35 @@
-import React, { useRef, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Points, PointMaterial } from '@react-three/drei';
-import * as random from 'maath/random/dist/maath-random.esm';
-
-function OriginalPDFRubyDust(props) {
-  const ref = useRef();
-  const [sphere] = useState(() => random.inSphere(new Float32Array(1600), { radius: 3.0 }));
-
-  useFrame((state, delta) => {
-    if (ref.current) {
-      ref.current.rotation.x -= delta / 35;
-      ref.current.rotation.y -= delta / 45;
-      ref.current.rotation.x += (state.pointer.y * 0.1 - ref.current.rotation.x) * 0.04;
-      ref.current.rotation.y += (state.pointer.x * 0.1 - ref.current.rotation.y) * 0.04;
-    }
-  });
-
-  return (
-    <group rotation={[0, 0, Math.PI / 4]}>
-      <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
-        <PointMaterial
-          transparent
-          color="#ff3333"
-          size={0.012}
-          sizeAttenuation={true}
-          depthWrite={false}
-          opacity={0.5}
-        />
-      </Points>
-    </group>
-  );
-}
+import React from 'react';
 
 export default function BackgroundVFX() {
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-gradient-to-b from-[#260307] via-[#1a0104] to-[#0d0002]">
-      {/* Original PDF Signature Crimson Radial Ambient Glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[550px] bg-gradient-to-r from-[#b30000]/30 via-[#990000]/25 to-[#660000]/20 rounded-full blur-[150px] pointer-events-none animate-pulse" />
-      <div className="absolute bottom-1/4 left-1/3 -translate-x-1/2 w-[750px] h-[450px] bg-gradient-to-tr from-[#800000]/35 via-[#660000]/20 to-transparent rounded-full blur-[170px] pointer-events-none" />
-      <div className="absolute top-3/4 right-1/4 w-[650px] h-[400px] bg-[#a30000]/20 rounded-full blur-[160px] pointer-events-none" />
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#0c0103]">
+      {/* 1. Base Rich Damask Wine Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#220206] via-[#140104] to-[#0a0002]" />
 
-      {/* Vignette Contrast Overlay */}
-      <div className="absolute inset-0 bg-radial from-transparent via-[#0d0002]/30 to-[#0d0002]/85 pointer-events-none" />
+      {/* 2. Hand-Crafted Structural Architectural Grid (Agency Precision) */}
+      <div 
+        className="absolute inset-0 opacity-[0.035]"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(255, 255, 255, 0.6) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.6) 1px, transparent 1px)
+          `,
+          backgroundSize: '64px 64px'
+        }}
+      />
 
-      {/* R3F Ruby Atmosphere */}
-      <Canvas camera={{ position: [0, 0, 1.5] }} gl={{ powerPreference: 'high-performance' }}>
-        <OriginalPDFRubyDust />
-      </Canvas>
+      {/* 3. Soft Hand-Positioned Ruby Spotlights (Subtle & Elegant, 0% Noise) */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-[#990000]/18 rounded-full blur-[180px] pointer-events-none" />
+      <div className="absolute bottom-0 left-1/3 w-[800px] h-[400px] bg-[#660000]/15 rounded-full blur-[200px] pointer-events-none" />
+      <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-red-950/20 rounded-full blur-[160px] pointer-events-none" />
+
+      {/* 4. Luxury Vignette Edge Mask */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at center, transparent 40%, rgba(5, 0, 1, 0.85) 100%)'
+        }}
+      />
     </div>
   );
 }
