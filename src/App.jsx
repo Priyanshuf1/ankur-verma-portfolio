@@ -23,31 +23,30 @@ export default function App() {
   
   const isAnimating = useRef(false);
   const touchStartY = useRef(0);
+  const touchStartX = useRef(0);
   const wheelCooldown = useRef(0);
   const slideRefs = useRef([]);
 
   const totalSlides = 11;
 
-  // Initialize GSAP Slide Styles (Fixed Viewport Stack)
+  // Initialize Hardware-Accelerated Mobile-First Slide Stack
   useEffect(() => {
     slideRefs.current.forEach((slide, idx) => {
       if (!slide) return;
       if (idx === 0) {
         gsap.set(slide, {
           scale: 1,
+          y: 0,
           opacity: 1,
-          filter: 'blur(0px)',
-          clipPath: 'circle(150% at 50% 50%)',
           zIndex: 20,
           pointerEvents: 'auto',
           display: 'block'
         });
       } else {
         gsap.set(slide, {
-          scale: 0.8,
+          scale: 0.95,
+          y: 40,
           opacity: 0,
-          filter: 'blur(10px)',
-          clipPath: 'circle(0% at 50% 50%)',
           zIndex: 10,
           pointerEvents: 'none',
           display: 'none'
@@ -56,7 +55,7 @@ export default function App() {
     });
   }, []);
 
-  // Ultra-Smooth 60fps Dynamic Slide Emergence Portal Engine
+  // 60FPS High-Performance Mobile-Optimized Transition Engine (0 Lag, Pure GPU Transform)
   const transitionToSlide = (targetIndex, direction = 'next') => {
     if (isAnimating.current || targetIndex === currentSlide || targetIndex < 0 || targetIndex >= totalSlides) {
       return;
@@ -91,60 +90,61 @@ export default function App() {
       }
     });
 
+    const animDuration = window.innerWidth < 768 ? 0.45 : 0.55;
+
     if (direction === 'next') {
       timeline.to(currentEl, {
-        scale: 1.08,
+        scale: 0.92,
+        y: -40,
         opacity: 0,
-        filter: 'blur(8px)',
-        duration: 0.65,
-        ease: 'power2.inOut'
+        duration: animDuration,
+        ease: 'power2.inOut',
+        force3D: true
       }, 0);
 
       timeline.fromTo(
         targetEl,
         {
-          scale: 0.85,
-          opacity: 0,
-          filter: 'blur(12px)',
-          clipPath: 'circle(0% at 50% 50%)'
+          scale: 0.95,
+          y: 60,
+          opacity: 0
         },
         {
           scale: 1,
+          y: 0,
           opacity: 1,
-          filter: 'blur(0px)',
-          clipPath: 'circle(150% at 50% 50%)',
-          duration: 0.75,
-          ease: 'power3.out'
+          duration: animDuration + 0.05,
+          ease: 'power2.out',
+          force3D: true
         },
-        0.05
+        0.02
       );
     } else {
       timeline.to(currentEl, {
-        scale: 0.85,
+        scale: 0.95,
+        y: 60,
         opacity: 0,
-        filter: 'blur(10px)',
-        clipPath: 'circle(0% at 50% 50%)',
-        duration: 0.65,
-        ease: 'power2.inOut'
+        duration: animDuration,
+        ease: 'power2.inOut',
+        force3D: true
       }, 0);
 
       timeline.fromTo(
         targetEl,
         {
-          scale: 1.08,
-          opacity: 0,
-          filter: 'blur(8px)',
-          clipPath: 'circle(150% at 50% 50%)'
+          scale: 0.92,
+          y: -40,
+          opacity: 0
         },
         {
           scale: 1,
+          y: 0,
           opacity: 1,
-          filter: 'blur(0px)',
-          clipPath: 'circle(150% at 50% 50%)',
-          duration: 0.75,
-          ease: 'power3.out'
+          duration: animDuration + 0.05,
+          ease: 'power2.out',
+          force3D: true
         },
-        0.05
+        0.02
       );
     }
   };
@@ -169,17 +169,17 @@ export default function App() {
     }
   };
 
-  // Optimized Instant Mouse Wheel & Touch Swipe Handler (Zero Lag Cooldown)
+  // High-Precision Native Touch & Wheel Listeners
   useEffect(() => {
     const handleWheel = (e) => {
       e.preventDefault();
       const now = Date.now();
-      if (isAnimating.current || now - wheelCooldown.current < 450) return;
+      if (isAnimating.current || now - wheelCooldown.current < 350) return;
 
-      if (e.deltaY > 12) {
+      if (e.deltaY > 10) {
         wheelCooldown.current = now;
         nextSlide();
-      } else if (e.deltaY < -12) {
+      } else if (e.deltaY < -10) {
         wheelCooldown.current = now;
         prevSlide();
       }
@@ -187,17 +187,24 @@ export default function App() {
 
     const handleTouchStart = (e) => {
       touchStartY.current = e.touches[0].clientY;
+      touchStartX.current = e.touches[0].clientX;
     };
 
     const handleTouchEnd = (e) => {
       if (isAnimating.current) return;
       const touchEndY = e.changedTouches[0].clientY;
-      const diffY = touchStartY.current - touchEndY;
+      const touchEndX = e.changedTouches[0].clientX;
 
-      if (diffY > 25) {
-        nextSlide();
-      } else if (diffY < -25) {
-        prevSlide();
+      const diffY = touchStartY.current - touchEndY;
+      const diffX = touchStartX.current - touchEndX;
+
+      // Ensure vertical swipe is intentioned (more vertical than horizontal)
+      if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 30) {
+        if (diffY > 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
       }
     };
 
@@ -248,7 +255,7 @@ export default function App() {
   ];
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-[#0a0506] text-white select-none">
+    <div className="relative w-screen h-screen overflow-hidden bg-[#0a0506] text-white select-none touch-none">
       {/* Exact Fleety Webflow Background Asset */}
       <BackgroundVFX />
 
@@ -260,13 +267,13 @@ export default function App() {
         />
       </div>
 
-      {/* Fixed Viewport Stacked Slide Layers */}
+      {/* Fixed Viewport Stacked Slide Layers (Hardware Accelerated) */}
       <div className="relative z-10 w-full h-full overflow-hidden">
         {slides.map((slideComponent, idx) => (
           <section
             key={idx}
             ref={(el) => (slideRefs.current[idx] = el)}
-            className="absolute inset-0 w-full h-full p-2 sm:p-4 flex flex-col justify-center items-center transform-gpu"
+            className="absolute inset-0 w-full h-full p-2 sm:p-4 flex flex-col justify-center items-center transform-gpu will-change-transform"
           >
             <div className="w-full h-full max-w-7xl mx-auto flex flex-col justify-center items-center">
               {slideComponent}
