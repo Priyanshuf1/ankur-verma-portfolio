@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Lenis from 'lenis';
+import { gsap } from 'gsap';
 import BackgroundVFX from './components/BackgroundVFX';
 import ImageModal from './components/ImageModal';
 
@@ -34,87 +34,210 @@ const slideTitles = [
 export default function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [modalData, setModalData] = useState({ isOpen: false, src: '', alt: '' });
-  const containerRef = useRef(null);
-  const lenisRef = useRef(null);
-  const sectionsRef = useRef([]);
+  
+  const isAnimating = useRef(false);
+  const touchStartY = useRef(0);
+  const slideRefs = useRef([]);
 
   const totalSlides = 11;
 
-  // Initialize Lenis Ultra-Smooth Liquid Scroll Engine
+  // Initialize GSAP Slide Styles (Fixed Viewport Stack)
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    slideRefs.current.forEach((slide, idx) => {
+      if (!slide) return;
+      if (idx === 0) {
+        gsap.set(slide, {
+          scale: 1,
+          opacity: 1,
+          filter: 'blur(0px)',
+          clipPath: 'circle(150% at 50% 50%)',
+          zIndex: 20,
+          pointerEvents: 'auto',
+          display: 'block'
+        });
+      } else {
+        gsap.set(slide, {
+          scale: 0.35,
+          opacity: 0,
+          filter: 'blur(20px)',
+          clipPath: 'circle(0% at 50% 50%)',
+          zIndex: 10,
+          pointerEvents: 'none',
+          display: 'none'
+        });
+      }
+    });
+  }, []);
 
-    const lenis = new Lenis({
-      wrapper: container,
-      content: container,
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1.1,
-      touchMultiplier: 2.0,
-      infinite: false,
+  // Awwwards "Emerge From Inside" 3D Depth Portal Transition Engine
+  const transitionToSlide = (targetIndex, direction = 'next') => {
+    if (isAnimating.current || targetIndex === currentSlide || targetIndex < 0 || targetIndex >= totalSlides) {
+      return;
+    }
+
+    isAnimating.current = true;
+
+    const currentEl = slideRefs.current[currentSlide];
+    const targetEl = slideRefs.current[targetIndex];
+
+    if (!currentEl || !targetEl) {
+      isAnimating.current = false;
+      return;
+    }
+
+    // Set target element visible & z-index
+    gsap.set(targetEl, {
+      display: 'block',
+      zIndex: 30,
+      pointerEvents: 'auto'
     });
 
-    lenisRef.current = lenis;
+    gsap.set(currentEl, {
+      zIndex: 20,
+      pointerEvents: 'none'
+    });
 
-    let animationFrameId;
-    function raf(time) {
-      lenis.raf(time);
-      animationFrameId = requestAnimationFrame(raf);
-    }
-    animationFrameId = requestAnimationFrame(raf);
-
-    const handleScroll = () => {
-      const slideHeight = container.clientHeight;
-      if (slideHeight > 0) {
-        const activeIdx = Math.round(container.scrollTop / slideHeight);
-        if (activeIdx >= 0 && activeIdx < totalSlides) {
-          setCurrentSlide(activeIdx);
-        }
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        gsap.set(currentEl, { display: 'none' });
+        setCurrentSlide(targetIndex);
+        isAnimating.current = false;
       }
-    };
+    });
 
-    container.addEventListener('scroll', handleScroll, { passive: true });
+    if (direction === 'next') {
+      // Current slide zooms out & fades into backdrop depth
+      timeline.to(currentEl, {
+        scale: 1.25,
+        opacity: 0,
+        filter: 'blur(15px)',
+        duration: 0.9,
+        ease: 'power3.inOut'
+      }, 0);
 
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      container.removeEventListener('scroll', handleScroll);
-      lenis.destroy();
-    };
-  }, [totalSlides]);
+      // Target slide EMERGES FROM INSIDE (Scale 0.3 -> 1, Circle Mask 0% -> 150%)
+      timeline.fromTo(
+        targetEl,
+        {
+          scale: 0.3,
+          opacity: 0,
+          filter: 'blur(25px)',
+          clipPath: 'circle(0% at 50% 50%)'
+        },
+        {
+          scale: 1,
+          opacity: 1,
+          filter: 'blur(0px)',
+          clipPath: 'circle(150% at 50% 50%)',
+          duration: 1.0,
+          ease: 'power4.out'
+        },
+        0.1
+      );
+    } else {
+      // Reverse transition (Emerges inwards smoothly)
+      timeline.to(currentEl, {
+        scale: 0.3,
+        opacity: 0,
+        filter: 'blur(20px)',
+        clipPath: 'circle(0% at 50% 50%)',
+        duration: 0.9,
+        ease: 'power3.inOut'
+      }, 0);
+
+      timeline.fromTo(
+        targetEl,
+        {
+          scale: 1.25,
+          opacity: 0,
+          filter: 'blur(15px)',
+          clipPath: 'circle(150% at 50% 50%)'
+        },
+        {
+          scale: 1,
+          opacity: 1,
+          filter: 'blur(0px)',
+          clipPath: 'circle(150% at 50% 50%)',
+          duration: 1.0,
+          ease: 'power4.out'
+        },
+        0.1
+      );
+    }
+  };
 
   const goToSlide = (newIndex) => {
-    if (newIndex < 0 || newIndex >= totalSlides) return;
-    const targetSection = sectionsRef.current[newIndex];
-    if (targetSection && lenisRef.current) {
-      lenisRef.current.scrollTo(targetSection, {
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
-      setCurrentSlide(newIndex);
-    } else if (containerRef.current) {
-      containerRef.current.scrollTo({
-        top: newIndex * containerRef.current.clientHeight,
-        behavior: 'smooth'
-      });
-      setCurrentSlide(newIndex);
+    if (newIndex > currentSlide) {
+      transitionToSlide(newIndex, 'next');
+    } else if (newIndex < currentSlide) {
+      transitionToSlide(newIndex, 'prev');
     }
   };
 
   const nextSlide = () => {
     if (currentSlide < totalSlides - 1) {
-      goToSlide(currentSlide + 1);
+      transitionToSlide(currentSlide + 1, 'next');
     }
   };
 
   const prevSlide = () => {
     if (currentSlide > 0) {
-      goToSlide(currentSlide - 1);
+      transitionToSlide(currentSlide - 1, 'prev');
     }
   };
+
+  // Listen for Mouse Wheel Events (No Native Document Scroll)
+  useEffect(() => {
+    const handleWheel = (e) => {
+      e.preventDefault();
+      if (isAnimating.current) return;
+
+      if (e.deltaY > 25) {
+        nextSlide();
+      } else if (e.deltaY < -25) {
+        prevSlide();
+      }
+    };
+
+    const handleTouchStart = (e) => {
+      touchStartY.current = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e) => {
+      if (isAnimating.current) return;
+      const touchEndY = e.changedTouches[0].clientY;
+      const diffY = touchStartY.current - touchEndY;
+
+      if (diffY > 40) {
+        nextSlide();
+      } else if (diffY < -40) {
+        prevSlide();
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (isAnimating.current) return;
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currentSlide]);
 
   const handleOpenModal = (src, alt) => {
     setModalData({ isOpen: true, src, alt });
@@ -151,16 +274,13 @@ export default function App() {
         />
       </div>
 
-      {/* Ultra Smooth Lenis FullPage Container */}
-      <div 
-        ref={containerRef}
-        className="fullpage-container relative z-10 w-full h-full"
-      >
+      {/* Fixed Viewport Stacked Slide Layers (Emerges from Inside Portal Transition) */}
+      <div className="relative z-10 w-full h-full overflow-hidden">
         {slides.map((slideComponent, idx) => (
-          <section 
-            key={idx} 
-            ref={(el) => (sectionsRef.current[idx] = el)}
-            className="fullpage-section w-full h-full p-2 sm:p-4"
+          <section
+            key={idx}
+            ref={(el) => (slideRefs.current[idx] = el)}
+            className="absolute inset-0 w-full h-full p-2 sm:p-4 flex flex-col justify-center items-center transform-gpu"
           >
             <div className="w-full h-full max-w-7xl mx-auto flex flex-col justify-center items-center">
               {slideComponent}
@@ -192,7 +312,7 @@ export default function App() {
         </span>
         <span className="text-gray-500">/</span>
         <span>{totalSlides < 10 ? `0${totalSlides}` : totalSlides}</span>
-        <span className="text-gray-300 text-xs hidden sm:inline ml-2 uppercase tracking-widest border-l border-red-900/50 pl-2">
+        <span className="text-gray-300 text-xs hidden sm:inline ml-2 uppercase tracking-widest border-l border-red-900/50 pl-2 font-bold">
           {slideTitles[currentSlide]}
         </span>
       </div>
