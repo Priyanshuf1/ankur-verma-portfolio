@@ -55,8 +55,8 @@ export default function App() {
     });
   }, []);
 
-  // Check if touch target is a button or interactive control
-  const isInteractiveTarget = (target) => {
+  // Check if touch target is a true interactive button/link/modal (not just background card)
+  const isButtonOrLinkTarget = (target) => {
     if (!target) return false;
     return (
       target.closest('button') ||
@@ -65,7 +65,6 @@ export default function App() {
       target.closest('input') ||
       target.closest('select') ||
       target.closest('[role="button"]') ||
-      target.closest('.interactive-control') ||
       target.closest('.modal-overlay')
     );
   };
@@ -187,15 +186,14 @@ export default function App() {
   // High-Precision Mobile Touch & Wheel Protection with Boundary Detection
   useEffect(() => {
     const handleWheel = (e) => {
-      // Internal scroll boundary check
       const scrollableEl = e.target.closest('.scrollable-slide-content');
       if (scrollableEl) {
         const { scrollTop, scrollHeight, clientHeight } = scrollableEl;
         if (e.deltaY > 0 && scrollTop + clientHeight < scrollHeight - 8) {
-          return; // Let internal element scroll down
+          return;
         }
         if (e.deltaY < 0 && scrollTop > 8) {
-          return; // Let internal element scroll up
+          return;
         }
       }
 
@@ -218,9 +216,6 @@ export default function App() {
     };
 
     const handleTouchMove = (e) => {
-      if (isInteractiveTarget(e.target)) return;
-
-      // Prevent mobile browser native pull-to-refresh on vertical swipe down
       if (e.touches && e.touches.length === 1) {
         const currentY = e.touches[0].clientY;
         const currentX = e.touches[0].clientX;
@@ -234,7 +229,8 @@ export default function App() {
           if (diffY < 0 && scrollTop > 8) return;
         }
 
-        if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 10) {
+        // Always prevent mobile browser pull-to-refresh when dragging vertically
+        if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 8) {
           if (e.cancelable) {
             e.preventDefault();
           }
@@ -245,28 +241,30 @@ export default function App() {
     const handleTouchEnd = (e) => {
       if (isAnimating.current) return;
 
-      // Check if target is inside a scrollable internal element (like SlideAnalytics)
-      const scrollableEl = e.target.closest('.scrollable-slide-content');
       const touchEndY = e.changedTouches[0].clientY;
       const touchEndX = e.changedTouches[0].clientX;
+
       const diffY = touchStartY.current - touchEndY;
       const diffX = touchStartX.current - touchEndX;
 
-      if (scrollableEl) {
-        const { scrollTop, scrollHeight, clientHeight } = scrollableEl;
-        // If swiping finger UP (diffY > 0) and not at bottom boundary -> keep scrolling internally!
-        if (diffY > 0 && scrollTop + clientHeight < scrollHeight - 8) {
-          return;
-        }
-        // If swiping finger DOWN (diffY < 0) and not at top boundary -> keep scrolling internally!
-        if (diffY < 0 && scrollTop > 8) {
-          return;
-        }
-      } else if (isInteractiveTarget(e.target)) {
+      // If pure tap without drag (diffY < 15px) on a button or link, let button handle it
+      if (Math.abs(diffY) < 15 && Math.abs(diffX) < 15 && isButtonOrLinkTarget(e.target)) {
         return;
       }
 
-      // Require vertical swipe (> 25px & dominant vertical angle)
+      // Check internal scrollable container boundaries
+      const scrollableEl = e.target.closest('.scrollable-slide-content');
+      if (scrollableEl) {
+        const { scrollTop, scrollHeight, clientHeight } = scrollableEl;
+        if (diffY > 0 && scrollTop + clientHeight < scrollHeight - 8) {
+          return;
+        }
+        if (diffY < 0 && scrollTop > 8) {
+          return;
+        }
+      }
+
+      // Perform slide transition if swipe threshold (> 25px) is met
       if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 25) {
         if (diffY > 0) {
           nextSlide(); // Finger swiped UP -> Go to NEXT slide
@@ -325,7 +323,7 @@ export default function App() {
   ];
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-[#0a0506] text-white select-none">
+    <div className="relative w-screen h-screen overflow-hidden bg-[#0a0506] text-white select-none touch-none">
       {/* Exact Fleety Webflow Background Asset */}
       <BackgroundVFX />
 
@@ -353,7 +351,7 @@ export default function App() {
       </div>
 
       {/* Navigation Arrows (Bottom-Right) */}
-      <div className="fixed right-3 sm:right-6 bottom-4 sm:bottom-6 z-40 flex items-center gap-2 interactive-control">
+      <div className="fixed right-3 sm:right-6 bottom-4 sm:bottom-6 z-40 flex items-center gap-2">
         <button
           onClick={prevSlide}
           disabled={currentSlide === 0}
