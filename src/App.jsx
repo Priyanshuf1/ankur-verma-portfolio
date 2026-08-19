@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import BackgroundVFX from './components/BackgroundVFX';
-import CustomCursor from './components/CustomCursor';
 import ImageModal from './components/ImageModal';
 
 import SlideHero from './components/slides/SlideHero';
@@ -18,28 +17,14 @@ import SlideContact from './components/slides/SlideContact';
 
 import { ChevronUp, ChevronDown } from 'lucide-react';
 
-const slideTitles = [
-  'Hero',
-  'About Me',
-  'Expertise',
-  'Table of Contents',
-  'Certifications',
-  'Social Media',
-  'Logofolio',
-  'Reach & Performance',
-  'Meta Ads',
-  'Video Production',
-  'Contact'
-];
-
 export default function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [modalData, setModalData] = useState({ isOpen: false, src: '', alt: '' });
   
   const isAnimating = useRef(false);
   const touchStartY = useRef(0);
+  const wheelCooldown = useRef(0);
   const slideRefs = useRef([]);
-  const containerRef = useRef(null);
 
   const totalSlides = 11;
 
@@ -59,9 +44,9 @@ export default function App() {
         });
       } else {
         gsap.set(slide, {
-          scale: 0.35,
+          scale: 0.8,
           opacity: 0,
-          filter: 'blur(25px)',
+          filter: 'blur(10px)',
           clipPath: 'circle(0% at 50% 50%)',
           zIndex: 10,
           pointerEvents: 'none',
@@ -71,25 +56,7 @@ export default function App() {
     });
   }, []);
 
-  // 3D Parallax Mouse Tilt on Active Slide
-  const handleMouseMove = (e) => {
-    const activeEl = slideRefs.current[currentSlide];
-    if (!activeEl || isAnimating.current) return;
-
-    const { innerWidth, innerHeight } = window;
-    const x = (e.clientX / innerWidth - 0.5) * 6;
-    const y = (e.clientY / innerHeight - 0.5) * 6;
-
-    gsap.to(activeEl, {
-      rotateY: x,
-      rotateX: -y,
-      duration: 0.6,
-      ease: 'power1.out',
-      transformPerspective: 1200
-    });
-  };
-
-  // Awwwards "Emerge From Inside" 3D Depth Portal Transition Engine
+  // Ultra-Smooth 60fps Dynamic Slide Emergence Portal Engine
   const transitionToSlide = (targetIndex, direction = 'next') => {
     if (isAnimating.current || targetIndex === currentSlide || targetIndex < 0 || targetIndex >= totalSlides) {
       return;
@@ -105,14 +72,10 @@ export default function App() {
       return;
     }
 
-    gsap.to(currentEl, { rotateX: 0, rotateY: 0, duration: 0.3 });
-
     gsap.set(targetEl, {
       display: 'block',
       zIndex: 30,
-      pointerEvents: 'auto',
-      rotateX: 0,
-      rotateY: 0
+      pointerEvents: 'auto'
     });
 
     gsap.set(currentEl, {
@@ -130,19 +93,19 @@ export default function App() {
 
     if (direction === 'next') {
       timeline.to(currentEl, {
-        scale: 1.25,
+        scale: 1.08,
         opacity: 0,
-        filter: 'blur(16px)',
-        duration: 1.0,
-        ease: 'power3.inOut'
+        filter: 'blur(8px)',
+        duration: 0.65,
+        ease: 'power2.inOut'
       }, 0);
 
       timeline.fromTo(
         targetEl,
         {
-          scale: 0.35,
+          scale: 0.85,
           opacity: 0,
-          filter: 'blur(30px)',
+          filter: 'blur(12px)',
           clipPath: 'circle(0% at 50% 50%)'
         },
         {
@@ -150,27 +113,27 @@ export default function App() {
           opacity: 1,
           filter: 'blur(0px)',
           clipPath: 'circle(150% at 50% 50%)',
-          duration: 1.15,
-          ease: 'power4.out'
+          duration: 0.75,
+          ease: 'power3.out'
         },
-        0.1
+        0.05
       );
     } else {
       timeline.to(currentEl, {
-        scale: 0.35,
+        scale: 0.85,
         opacity: 0,
-        filter: 'blur(25px)',
+        filter: 'blur(10px)',
         clipPath: 'circle(0% at 50% 50%)',
-        duration: 1.0,
-        ease: 'power3.inOut'
+        duration: 0.65,
+        ease: 'power2.inOut'
       }, 0);
 
       timeline.fromTo(
         targetEl,
         {
-          scale: 1.25,
+          scale: 1.08,
           opacity: 0,
-          filter: 'blur(16px)',
+          filter: 'blur(8px)',
           clipPath: 'circle(150% at 50% 50%)'
         },
         {
@@ -178,10 +141,10 @@ export default function App() {
           opacity: 1,
           filter: 'blur(0px)',
           clipPath: 'circle(150% at 50% 50%)',
-          duration: 1.15,
-          ease: 'power4.out'
+          duration: 0.75,
+          ease: 'power3.out'
         },
-        0.1
+        0.05
       );
     }
   };
@@ -206,15 +169,18 @@ export default function App() {
     }
   };
 
-  // Listen for Mouse Wheel & Touch Swipe Events
+  // Optimized Instant Mouse Wheel & Touch Swipe Handler (Zero Lag Cooldown)
   useEffect(() => {
     const handleWheel = (e) => {
       e.preventDefault();
-      if (isAnimating.current) return;
+      const now = Date.now();
+      if (isAnimating.current || now - wheelCooldown.current < 450) return;
 
-      if (e.deltaY > 20) {
+      if (e.deltaY > 12) {
+        wheelCooldown.current = now;
         nextSlide();
-      } else if (e.deltaY < -20) {
+      } else if (e.deltaY < -12) {
+        wheelCooldown.current = now;
         prevSlide();
       }
     };
@@ -228,9 +194,9 @@ export default function App() {
       const touchEndY = e.changedTouches[0].clientY;
       const diffY = touchStartY.current - touchEndY;
 
-      if (diffY > 35) {
+      if (diffY > 25) {
         nextSlide();
-      } else if (diffY < -35) {
+      } else if (diffY < -25) {
         prevSlide();
       }
     };
@@ -282,29 +248,20 @@ export default function App() {
   ];
 
   return (
-    <div 
-      onMouseMove={handleMouseMove}
-      className="relative w-screen h-screen overflow-hidden bg-[#100103] text-white select-none perspective-1000"
-    >
-      {/* Original PDF Signature Crimson Background */}
+    <div className="relative w-screen h-screen overflow-hidden bg-[#0a0506] text-white select-none">
+      {/* Exact Fleety Webflow Background Asset */}
       <BackgroundVFX />
-
-      {/* Interactive Glowing Cursor Follower */}
-      <CustomCursor />
 
       {/* Top Webflow Progress Bar */}
       <div className="fixed top-0 left-0 right-0 z-50 h-1.5 bg-black/60 backdrop-blur-md">
         <div 
-          className="h-full bg-gradient-to-r from-red-700 via-red-500 to-amber-500 transition-all duration-500 ease-out shadow-[0_0_15px_rgba(239,68,68,0.9)]"
+          className="h-full bg-gradient-to-r from-red-700 via-red-500 to-amber-500 transition-all duration-300 ease-out shadow-[0_0_15px_rgba(239,68,68,0.9)]"
           style={{ width: `${((currentSlide + 1) / totalSlides) * 100}%` }}
         />
       </div>
 
       {/* Fixed Viewport Stacked Slide Layers */}
-      <div 
-        ref={containerRef}
-        className="relative z-10 w-full h-full overflow-hidden"
-      >
+      <div className="relative z-10 w-full h-full overflow-hidden">
         {slides.map((slideComponent, idx) => (
           <section
             key={idx}
@@ -318,19 +275,7 @@ export default function App() {
         ))}
       </div>
 
-      {/* Slide Counter Indicator */}
-      <div className="fixed left-3 sm:left-6 bottom-4 sm:bottom-6 z-40 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-red-900/40 text-xs sm:text-sm font-futuristic text-gray-300 flex items-center gap-2 shadow-2xl">
-        <span className="text-red-500 font-bold text-sm sm:text-base">
-          {currentSlide + 1 < 10 ? `0${currentSlide + 1}` : currentSlide + 1}
-        </span>
-        <span className="text-gray-500">/</span>
-        <span>{totalSlides < 10 ? `0${totalSlides}` : totalSlides}</span>
-        <span className="text-gray-300 text-xs hidden sm:inline ml-2 uppercase tracking-widest border-l border-red-900/50 pl-2 font-bold">
-          {slideTitles[currentSlide]}
-        </span>
-      </div>
-
-      {/* Navigation Arrows */}
+      {/* Navigation Arrows (Bottom-Right) */}
       <div className="fixed right-3 sm:right-6 bottom-4 sm:bottom-6 z-40 flex items-center gap-2">
         <button
           onClick={prevSlide}
