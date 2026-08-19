@@ -31,75 +31,76 @@ export default function BackgroundVFX() {
     let time = 0;
 
     const render = () => {
-      time += 0.015;
+      time += 0.008;
 
       ctx.clearRect(0, 0, width, height);
 
-      // 1. Fleety Luminous Laser Light Ray (Top-Left to Bottom-Right)
-      const gradRay = ctx.createLinearGradient(0, 0, width, height);
-      gradRay.addColorStop(0, 'rgba(255, 30, 30, 0.05)');
-      gradRay.addColorStop(0.3, 'rgba(239, 68, 68, 0.75)');
-      gradRay.addColorStop(0.5, 'rgba(255, 140, 0, 0.9)');
-      gradRay.addColorStop(0.7, 'rgba(220, 20, 60, 0.7)');
-      gradRay.addColorStop(1, 'rgba(150, 0, 0, 0.05)');
+      const mouseOffsetX = (mouseX / width - 0.5) * 50;
+      const mouseOffsetY = (mouseY / height - 0.5) * 50;
 
-      // Draw Main Luminous Light Beam Path
-      const mouseOffsetX = (mouseX / width - 0.5) * 60;
-      const mouseOffsetY = (mouseY / height - 0.5) * 60;
-
+      // 1. Primary Broad Glowing Orange/Amber Wave Beam (Fleety Hero Signature)
       ctx.save();
-      ctx.shadowColor = '#ff1a1a';
-      ctx.shadowBlur = 45;
+      ctx.filter = 'blur(45px)';
+
+      const grad1 = ctx.createLinearGradient(0, 0, width * 0.9, height * 0.9);
+      grad1.addColorStop(0, 'rgba(255, 85, 0, 0.85)');
+      grad1.addColorStop(0.35, 'rgba(255, 140, 0, 0.95)');
+      grad1.addColorStop(0.65, 'rgba(230, 40, 20, 0.75)');
+      grad1.addColorStop(1, 'rgba(120, 0, 0, 0.1)');
 
       ctx.beginPath();
-      ctx.moveTo(-100 + mouseOffsetX, -50 + mouseOffsetY);
+      ctx.moveTo(-150 + mouseOffsetX, -100 + mouseOffsetY);
       ctx.bezierCurveTo(
-        width * 0.35 + Math.sin(time) * 40 + mouseOffsetX,
-        height * 0.2 + Math.cos(time * 0.8) * 30 + mouseOffsetY,
-        width * 0.65 + Math.cos(time * 0.9) * 40 + mouseOffsetX,
-        height * 0.75 + Math.sin(time * 0.7) * 30 + mouseOffsetY,
-        width + 150 + mouseOffsetX,
-        height + 100 + mouseOffsetY
+        width * 0.35 + Math.sin(time) * 30 + mouseOffsetX,
+        height * 0.25 + Math.cos(time * 0.7) * 25 + mouseOffsetY,
+        width * 0.65 + Math.cos(time * 0.8) * 30 + mouseOffsetX,
+        height * 0.7 + Math.sin(time * 0.6) * 25 + mouseOffsetY,
+        width + 200 + mouseOffsetX,
+        height + 150 + mouseOffsetY
       );
-      ctx.lineWidth = 3.5;
-      ctx.strokeStyle = gradRay;
+      ctx.lineWidth = 42;
+      ctx.strokeStyle = grad1;
       ctx.stroke();
 
-      // Core Intense Bright Laser Line
+      // 2. Secondary Intense Core Highlight Wave
+      ctx.filter = 'blur(20px)';
+      const gradCore = ctx.createLinearGradient(width * 0.1, 0, width * 0.8, height);
+      gradCore.addColorStop(0, 'rgba(255, 200, 100, 0.9)');
+      gradCore.addColorStop(0.5, 'rgba(255, 100, 0, 0.95)');
+      gradCore.addColorStop(1, 'rgba(200, 20, 20, 0.4)');
+
       ctx.beginPath();
-      ctx.moveTo(-100 + mouseOffsetX, -50 + mouseOffsetY);
+      ctx.moveTo(-100 + mouseOffsetX, -80 + mouseOffsetY);
       ctx.bezierCurveTo(
-        width * 0.35 + Math.sin(time) * 40 + mouseOffsetX,
-        height * 0.2 + Math.cos(time * 0.8) * 30 + mouseOffsetY,
-        width * 0.65 + Math.cos(time * 0.9) * 40 + mouseOffsetX,
-        height * 0.75 + Math.sin(time * 0.7) * 30 + mouseOffsetY,
+        width * 0.35 + Math.sin(time) * 30 + mouseOffsetX,
+        height * 0.25 + Math.cos(time * 0.7) * 25 + mouseOffsetY,
+        width * 0.65 + Math.cos(time * 0.8) * 30 + mouseOffsetX,
+        height * 0.7 + Math.sin(time * 0.6) * 25 + mouseOffsetY,
         width + 150 + mouseOffsetX,
-        height + 100 + mouseOffsetY
+        height + 120 + mouseOffsetY
       );
-      ctx.lineWidth = 1.2;
-      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 14;
+      ctx.strokeStyle = gradCore;
       ctx.stroke();
 
-      // Secondary Luminous Ambient Wave Ribbon
-      const gradWave2 = ctx.createLinearGradient(0, height * 0.4, width, height * 0.8);
-      gradWave2.addColorStop(0, 'rgba(200, 0, 0, 0)');
-      gradWave2.addColorStop(0.5, 'rgba(255, 60, 20, 0.45)');
-      gradWave2.addColorStop(1, 'rgba(120, 0, 0, 0)');
-
-      ctx.shadowColor = '#ff4d4d';
-      ctx.shadowBlur = 35;
+      // 3. Bottom Curved Ambient Wave Ribbons (Fleety Fan Effect)
+      ctx.filter = 'blur(35px)';
+      const gradWave2 = ctx.createLinearGradient(0, height * 0.5, width, height);
+      gradWave2.addColorStop(0, 'rgba(255, 60, 0, 0.4)');
+      gradWave2.addColorStop(0.5, 'rgba(200, 20, 0, 0.5)');
+      gradWave2.addColorStop(1, 'rgba(80, 0, 0, 0.1)');
 
       ctx.beginPath();
-      ctx.moveTo(-50 - mouseOffsetX, height * 0.3 - mouseOffsetY);
+      ctx.moveTo(-100, height * 0.45);
       ctx.bezierCurveTo(
-        width * 0.4 - Math.cos(time * 0.7) * 50,
-        height * 0.55 + Math.sin(time * 0.9) * 40,
-        width * 0.75 + Math.sin(time * 0.8) * 50,
-        height * 0.85 - Math.cos(time * 0.6) * 30,
-        width + 100,
-        height * 0.95
+        width * 0.4 + Math.cos(time * 0.6) * 40,
+        height * 0.6 + Math.sin(time * 0.8) * 30,
+        width * 0.75 + Math.sin(time * 0.7) * 40,
+        height * 0.88 - Math.cos(time * 0.5) * 20,
+        width + 150,
+        height * 0.9
       );
-      ctx.lineWidth = 2.0;
+      ctx.lineWidth = 32;
       ctx.strokeStyle = gradWave2;
       ctx.stroke();
 
@@ -118,35 +119,24 @@ export default function BackgroundVFX() {
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#070103]">
-      {/* Fleety Base Dark Obsidian Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#120104] via-[#090103] to-[#040001]" />
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#09080a]">
+      {/* Fleety Exact Dark Base Background */}
+      <div className="absolute inset-0 bg-[#080709]" />
 
-      {/* Fleety Luminous Radial Ambient Spotlight Pools */}
-      <div className="absolute -top-20 -left-20 w-[850px] h-[600px] bg-gradient-to-br from-red-600/25 via-[#a30000]/15 to-transparent rounded-full blur-[160px] pointer-events-none animate-pulse" />
-      <div className="absolute top-1/3 right-0 w-[700px] h-[500px] bg-gradient-to-l from-amber-600/15 via-[#990000]/10 to-transparent rounded-full blur-[180px] pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-[750px] h-[450px] bg-red-950/20 rounded-full blur-[190px] pointer-events-none" />
+      {/* Fleety Luminous Orange/Gold Top-Left Glow */}
+      <div className="absolute -top-32 -left-32 w-[900px] h-[650px] bg-gradient-to-br from-[#ff5500]/30 via-[#e63900]/20 to-transparent rounded-full blur-[160px] pointer-events-none" />
 
-      {/* HTML Canvas Fleety Luminous Laser Ray & Wave VFX */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none opacity-90" />
+      {/* Fleety Bottom-Right Ambient Warm Glow */}
+      <div className="absolute bottom-0 right-0 w-[800px] h-[600px] bg-gradient-to-tl from-[#cc2200]/25 via-[#880000]/15 to-transparent rounded-full blur-[180px] pointer-events-none" />
 
-      {/* Sleek Fleety Grid Overlay (3.5% Opacity) */}
-      <div 
-        className="absolute inset-0 opacity-[0.035] pointer-events-none"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(255, 255, 255, 0.6) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.6) 1px, transparent 1px)
-          `,
-          backgroundSize: '64px 64px'
-        }}
-      />
+      {/* Canvas Luminous Wave Beam & Ribbons */}
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none opacity-95" />
 
-      {/* Vignette Edge Mask */}
+      {/* Soft Center Vignette Mask */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 45%, rgba(4, 0, 1, 0.85) 100%)'
+          background: 'radial-gradient(ellipse at center, transparent 40%, rgba(5, 4, 6, 0.75) 100%)'
         }}
       />
     </div>
