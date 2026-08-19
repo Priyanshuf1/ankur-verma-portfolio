@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import BackgroundVFX from './components/BackgroundVFX';
+import CustomCursor from './components/CustomCursor';
 import ImageModal from './components/ImageModal';
 
 import SlideHero from './components/slides/SlideHero';
@@ -38,6 +39,7 @@ export default function App() {
   const isAnimating = useRef(false);
   const touchStartY = useRef(0);
   const slideRefs = useRef([]);
+  const containerRef = useRef(null);
 
   const totalSlides = 11;
 
@@ -59,7 +61,7 @@ export default function App() {
         gsap.set(slide, {
           scale: 0.35,
           opacity: 0,
-          filter: 'blur(20px)',
+          filter: 'blur(25px)',
           clipPath: 'circle(0% at 50% 50%)',
           zIndex: 10,
           pointerEvents: 'none',
@@ -68,6 +70,24 @@ export default function App() {
       }
     });
   }, []);
+
+  // 3D Parallax Mouse Tilt on Active Slide
+  const handleMouseMove = (e) => {
+    const activeEl = slideRefs.current[currentSlide];
+    if (!activeEl || isAnimating.current) return;
+
+    const { innerWidth, innerHeight } = window;
+    const x = (e.clientX / innerWidth - 0.5) * 8; // Max +-4deg
+    const y = (e.clientY / innerHeight - 0.5) * 8;
+
+    gsap.to(activeEl, {
+      rotateY: x,
+      rotateX: -y,
+      duration: 0.6,
+      ease: 'power1.out',
+      transformPerspective: 1200
+    });
+  };
 
   // Awwwards "Emerge From Inside" 3D Depth Portal Transition Engine
   const transitionToSlide = (targetIndex, direction = 'next') => {
@@ -85,11 +105,16 @@ export default function App() {
       return;
     }
 
+    // Reset rotation before transition
+    gsap.to(currentEl, { rotateX: 0, rotateY: 0, duration: 0.3 });
+
     // Set target element visible & z-index
     gsap.set(targetEl, {
       display: 'block',
       zIndex: 30,
-      pointerEvents: 'auto'
+      pointerEvents: 'auto',
+      rotateX: 0,
+      rotateY: 0
     });
 
     gsap.set(currentEl, {
@@ -106,12 +131,12 @@ export default function App() {
     });
 
     if (direction === 'next') {
-      // Current slide zooms out & fades into backdrop depth
+      // Current slide zooms out into backdrop depth
       timeline.to(currentEl, {
-        scale: 1.25,
+        scale: 1.3,
         opacity: 0,
-        filter: 'blur(15px)',
-        duration: 0.9,
+        filter: 'blur(16px)',
+        duration: 1.0,
         ease: 'power3.inOut'
       }, 0);
 
@@ -121,7 +146,7 @@ export default function App() {
         {
           scale: 0.3,
           opacity: 0,
-          filter: 'blur(25px)',
+          filter: 'blur(30px)',
           clipPath: 'circle(0% at 50% 50%)'
         },
         {
@@ -129,28 +154,28 @@ export default function App() {
           opacity: 1,
           filter: 'blur(0px)',
           clipPath: 'circle(150% at 50% 50%)',
-          duration: 1.0,
+          duration: 1.15,
           ease: 'power4.out'
         },
         0.1
       );
     } else {
-      // Reverse transition (Emerges inwards smoothly)
+      // Reverse transition
       timeline.to(currentEl, {
         scale: 0.3,
         opacity: 0,
-        filter: 'blur(20px)',
+        filter: 'blur(25px)',
         clipPath: 'circle(0% at 50% 50%)',
-        duration: 0.9,
+        duration: 1.0,
         ease: 'power3.inOut'
       }, 0);
 
       timeline.fromTo(
         targetEl,
         {
-          scale: 1.25,
+          scale: 1.3,
           opacity: 0,
-          filter: 'blur(15px)',
+          filter: 'blur(16px)',
           clipPath: 'circle(150% at 50% 50%)'
         },
         {
@@ -158,7 +183,7 @@ export default function App() {
           opacity: 1,
           filter: 'blur(0px)',
           clipPath: 'circle(150% at 50% 50%)',
-          duration: 1.0,
+          duration: 1.15,
           ease: 'power4.out'
         },
         0.1
@@ -186,15 +211,15 @@ export default function App() {
     }
   };
 
-  // Listen for Mouse Wheel Events (No Native Document Scroll)
+  // Listen for Mouse Wheel & Gesture Events
   useEffect(() => {
     const handleWheel = (e) => {
       e.preventDefault();
       if (isAnimating.current) return;
 
-      if (e.deltaY > 25) {
+      if (e.deltaY > 20) {
         nextSlide();
-      } else if (e.deltaY < -25) {
+      } else if (e.deltaY < -20) {
         prevSlide();
       }
     };
@@ -208,9 +233,9 @@ export default function App() {
       const touchEndY = e.changedTouches[0].clientY;
       const diffY = touchStartY.current - touchEndY;
 
-      if (diffY > 40) {
+      if (diffY > 35) {
         nextSlide();
-      } else if (diffY < -40) {
+      } else if (diffY < -35) {
         prevSlide();
       }
     };
@@ -262,9 +287,15 @@ export default function App() {
   ];
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-[#0a0002] text-white select-none">
-      {/* Background Particle Atmosphere */}
+    <div 
+      onMouseMove={handleMouseMove}
+      className="relative w-screen h-screen overflow-hidden bg-[#070103] text-white select-none perspective-1000"
+    >
+      {/* Background Particle & Geometry Atmosphere */}
       <BackgroundVFX />
+
+      {/* Interactive Glowing Cursor Follower */}
+      <CustomCursor />
 
       {/* Top Webflow Progress Bar */}
       <div className="fixed top-0 left-0 right-0 z-50 h-1.5 bg-black/60 backdrop-blur-md">
@@ -275,7 +306,10 @@ export default function App() {
       </div>
 
       {/* Fixed Viewport Stacked Slide Layers (Emerges from Inside Portal Transition) */}
-      <div className="relative z-10 w-full h-full overflow-hidden">
+      <div 
+        ref={containerRef}
+        className="relative z-10 w-full h-full overflow-hidden"
+      >
         {slides.map((slideComponent, idx) => (
           <section
             key={idx}
