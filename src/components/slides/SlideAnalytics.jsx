@@ -1,5 +1,5 @@
 import React from 'react';
-import { ZoomIn, Eye, TrendingUp, ChevronRight } from 'lucide-react';
+import { ZoomIn, Eye, TrendingUp, ChevronRight, ArrowRight } from 'lucide-react';
 import TiltCard from '../TiltCard';
 
 const InstagramIcon = () => (
@@ -78,14 +78,10 @@ export default function SlideAnalytics({ onOpenModal }) {
         <p className="font-body text-white font-semibold text-xs sm:text-base max-w-3xl mx-auto drop-shadow-sm px-2">
           Data-driven reach that creates meaningful brand growth across multiple social media business profiles.
         </p>
-        <div className="sm:hidden flex items-center justify-center gap-1 text-[11px] font-futuristic text-red-400 font-bold mt-1">
-          <span>Swipe left &amp; right to view all 6 accounts</span>
-          <ChevronRight className="w-3.5 h-3.5 animate-pulse" />
-        </div>
       </div>
 
       {/* 6 Account Boxes Container (Mobile: Horizontal Snap Carousel, Desktop: 6-Col Grid) */}
-      <div className="flex sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 w-full overflow-x-auto sm:overflow-y-auto max-h-[calc(100vh-170px)] p-2 custom-scrollbar snap-x snap-mandatory slide-interactive my-auto shrink">
+      <div className="flex sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 w-full overflow-x-auto sm:overflow-y-auto max-h-[calc(100vh-185px)] p-2 custom-scrollbar snap-x snap-mandatory slide-interactive my-auto shrink">
         {accounts.map((acc) => (
           <div key={acc.id} className="w-[85vw] sm:w-auto shrink-0 snap-center">
             <TiltCard
@@ -110,7 +106,7 @@ export default function SlideAnalytics({ onOpenModal }) {
               <div className="grid grid-cols-2 gap-2 my-1">
                 <div
                   onClick={() => onOpenModal(acc.profileSrc, `${acc.brand} — Account Profile Screenshot`)}
-                  className="group relative h-44 sm:h-44 bg-black/90 rounded-xl overflow-hidden border border-white/30 hover:border-red-500 cursor-pointer shadow-md flex items-center justify-center interactive-control"
+                  className="group relative h-40 sm:h-44 bg-black/90 rounded-xl overflow-hidden border border-white/30 hover:border-red-500 cursor-pointer shadow-md flex items-center justify-center interactive-control"
                   title="Page 1: Account Profile"
                 >
                   <img
@@ -126,7 +122,7 @@ export default function SlideAnalytics({ onOpenModal }) {
 
                 <div
                   onClick={() => onOpenModal(acc.insightsSrc, `${acc.brand} — Reach & Analytics Insights`)}
-                  className="group relative h-44 sm:h-44 bg-black/90 rounded-xl overflow-hidden border border-white/30 hover:border-red-500 cursor-pointer shadow-md flex items-center justify-center interactive-control"
+                  className="group relative h-40 sm:h-44 bg-black/90 rounded-xl overflow-hidden border border-white/30 hover:border-red-500 cursor-pointer shadow-md flex items-center justify-center interactive-control"
                   title="Page 2: Reach & Analytics Insights"
                 >
                   <img
@@ -157,14 +153,12 @@ export default function SlideAnalytics({ onOpenModal }) {
         ))}
       </div>
 
-      {/* Subtitle Footer */}
-      <div className="mt-1 text-center max-w-2xl mx-auto border-t border-[#990000]/40 pt-1 shrink-0">
-        <h3 className="font-futuristic text-xs sm:text-sm text-red-500 font-black mb-0.5 uppercase tracking-wide">
-          What this section communicates
-        </h3>
-        <p className="font-body text-[11px] sm:text-xs text-white font-semibold">
-          Demonstrates hands-on social media management and performance tracking across multiple business profiles.
-        </p>
+      {/* Slide to View Work Note & Symbol Badge */}
+      <div className="mt-1 flex items-center justify-center gap-2 bg-[#990000]/40 border border-red-500/70 px-4 py-1.5 rounded-full shadow-lg shrink-0">
+        <span className="font-futuristic text-xs sm:text-sm font-black text-white uppercase tracking-wider">
+          SLIDE TO VIEW WORK
+        </span>
+        <ArrowRight className="w-4 h-4 text-red-400 animate-pulse shrink-0" />
       </div>
     </div>
   );
