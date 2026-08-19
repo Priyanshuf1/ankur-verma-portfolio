@@ -28,32 +28,31 @@ function WebflowGlowingCard({ logo, onClick }) {
       <div
         className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-300 z-0"
         style={{
-          opacity: isHovered ? 1 : 0.25,
+          opacity: isHovered ? 1 : 0.35,
           background: isHovered
-            ? `radial-gradient(350px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 30, 30, 1), rgba(239, 68, 68, 0.6) 40%, rgba(120, 0, 0, 0.2) 80%)`
-            : 'rgba(150, 0, 0, 0.3)'
+            ? `radial-gradient(350px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 30, 30, 1), rgba(239, 68, 68, 0.65) 40%, rgba(150, 0, 0, 0.3) 80%)`
+            : 'rgba(180, 0, 0, 0.4)'
         }}
       />
 
       {/* Inner Dark Card Body */}
       <div className="relative w-full h-full bg-[#0a0204] rounded-2xl p-3 flex flex-col items-center justify-between z-10 overflow-hidden">
-        {/* Webflow Radial Surface Glow (Directly Under Image) */}
+        {/* Webflow Radial Surface Glow */}
         <div
           className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-0"
           style={{
             opacity: isHovered ? 0.75 : 0,
-            background: `radial-gradient(220px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 20, 20, 0.45), rgba(180, 0, 0, 0.15) 50%, transparent 80%)`
+            background: `radial-gradient(220px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 20, 20, 0.5), rgba(180, 0, 0, 0.2) 50%, transparent 80%)`
           }}
         />
 
-        {/* Logo Image Frame - Dark Glassmorphism with Glowing Backdrop */}
-        <div className="relative z-10 w-full aspect-square flex items-center justify-center p-2.5 bg-black/80 rounded-xl shadow-inner border border-red-900/40 group-hover:border-red-500/80 transition-all overflow-hidden">
-          {/* Inner Image Radial Highlight */}
+        {/* Logo Image Frame */}
+        <div className="relative z-10 w-full aspect-square flex items-center justify-center p-2.5 bg-black/85 rounded-xl shadow-inner border border-red-900/50 group-hover:border-red-500 transition-all overflow-hidden">
           <div
             className="absolute inset-0 pointer-events-none transition-opacity duration-300"
             style={{
               opacity: isHovered ? 0.8 : 0,
-              background: `radial-gradient(150px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 40, 40, 0.6), transparent 75%)`
+              background: `radial-gradient(150px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 40, 40, 0.65), transparent 75%)`
             }}
           />
 
@@ -64,18 +63,18 @@ function WebflowGlowingCard({ logo, onClick }) {
           />
         </div>
 
-        {/* Title & Subtitle */}
-        <div className="relative z-10 w-full text-center pt-2 mt-2 border-t border-[#990000]/40">
+        {/* Title & Subtitle - High Contrast Bold White */}
+        <div className="relative z-10 w-full text-center pt-2 mt-2 border-t border-[#990000]/50">
           <h3 className="font-futuristic text-[11px] font-bold text-white group-hover:text-red-400 transition-colors uppercase truncate">
             {logo.name}
           </h3>
-          <p className="font-body text-[9px] text-gray-400 mt-0.5 truncate">
+          <p className="font-body text-[10px] font-bold text-gray-200 mt-0.5 truncate">
             {logo.subtitle}
           </p>
         </div>
 
         {/* Zoom Overlay */}
-        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 text-white font-futuristic text-[10px] uppercase rounded-2xl z-30 pointer-events-none">
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 text-white font-futuristic text-[10px] font-bold uppercase rounded-2xl z-30 pointer-events-none">
           <ZoomIn className="w-5 h-5 text-red-500 animate-pulse" />
           <span>Inspect Logo</span>
         </div>
@@ -137,7 +136,7 @@ export default function SlideLogofolio({ onOpenModal }) {
         <h2 className="font-futuristic text-5xl sm:text-7xl font-black text-[#b30000] tracking-wider uppercase select-none mb-1 drop-shadow-md">
           LOGOFOILO
         </h2>
-        <p className="font-body text-gray-300 text-xs sm:text-base max-w-3xl mx-auto font-medium">
+        <p className="font-body text-white font-semibold text-xs sm:text-base max-w-3xl mx-auto drop-shadow-sm">
           A curated showcase of distinctive logos crafted to create memorable and impactful brand identities.
         </p>
       </div>
@@ -154,11 +153,11 @@ export default function SlideLogofolio({ onOpenModal }) {
       </div>
 
       {/* Subtitle Footer */}
-      <div className="mt-2 text-center max-w-xl mx-auto border-t border-[#990000]/30 pt-2 shrink-0">
-        <h3 className="font-futuristic text-base sm:text-lg text-red-500 font-bold mb-0.5 flex items-center justify-center gap-2 uppercase tracking-wide">
+      <div className="mt-2 text-center max-w-xl mx-auto border-t border-[#990000]/40 pt-2 shrink-0">
+        <h3 className="font-futuristic text-base sm:text-lg text-red-500 font-black mb-0.5 flex items-center justify-center gap-2 uppercase tracking-wide">
           <Layers className="w-4 h-4" /> Brand Identity &amp; Logo Design
         </h3>
-        <p className="font-body text-xs text-gray-300">
+        <p className="font-body text-xs sm:text-sm text-white font-semibold">
           Distinctive logo concepts created to elevate brand identity across digital, salon, and studio spaces.
         </p>
       </div>

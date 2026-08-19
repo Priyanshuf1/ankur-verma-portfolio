@@ -5,11 +5,11 @@ export default function SlideAbout() {
     <div className="w-full h-full flex flex-col justify-between items-center px-4 py-3 max-w-6xl mx-auto overflow-hidden">
       {/* ABOUT ME Header & ANKUR VERMA Subtitle */}
       <div className="relative text-center w-full shrink-0 mt-1">
-        <h2 className="font-futuristic text-5xl sm:text-7xl md:text-8xl font-black text-[#8b0000] tracking-wider uppercase select-none drop-shadow-md">
+        <h2 className="font-futuristic text-5xl sm:text-7xl md:text-8xl font-black text-[#990000] tracking-wider uppercase select-none drop-shadow-md">
           ABOUT ME
         </h2>
         <div className="text-right max-w-4xl mx-auto -mt-3 sm:-mt-5 pr-4">
-          <span className="font-futuristic text-lg sm:text-2xl font-bold text-white tracking-widest uppercase border-b-2 border-red-600 pb-0.5">
+          <span className="font-futuristic text-xl sm:text-3xl font-black text-white tracking-widest uppercase border-b-2 border-red-500 pb-0.5">
             ANKUR VERMA
           </span>
         </div>
@@ -18,7 +18,7 @@ export default function SlideAbout() {
       {/* Solid Crimson Bar with Enlarged Armchair Cutout */}
       <div className="relative my-2 w-full flex justify-center items-center shrink-0">
         {/* Horizontal Solid Crimson Bar */}
-        <div className="absolute w-full h-20 sm:h-26 bg-gradient-to-r from-[#660000] via-[#990000] to-[#660000] rounded-2xl shadow-[0_0_45px_rgba(153,0,0,0.7)] z-0" />
+        <div className="absolute w-full h-20 sm:h-26 bg-gradient-to-r from-[#660000] via-[#a30000] to-[#660000] rounded-2xl shadow-[0_0_45px_rgba(163,0,0,0.8)] z-0" />
         
         {/* Transparent Armchair Cutout */}
         <div className="relative z-10 -my-8 sm:-my-12 max-w-lg w-full flex justify-center">
@@ -30,20 +30,20 @@ export default function SlideAbout() {
         </div>
       </div>
 
-      {/* Glassmorphic Bio Box with Generous Padding & Space */}
-      <div className="mb-2 w-full bg-[#0d0406]/95 border border-red-600/50 rounded-2xl p-5 sm:p-6 shadow-2xl backdrop-blur-md">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-200 font-body text-xs sm:text-sm md:text-base leading-relaxed">
-          <div className="space-y-2.5">
+      {/* High-Contrast Bold Glassmorphic Bio Box */}
+      <div className="mb-2 w-full bg-[#0e0407]/95 border-2 border-red-600/70 rounded-2xl p-5 sm:p-6 shadow-2xl backdrop-blur-md">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-white font-body text-sm sm:text-base md:text-lg leading-relaxed font-semibold">
+          <div className="space-y-3">
             <p>
-              I’m a Digital Marketing Professional with <strong className="text-white font-bold">2.5+ years of experience</strong> in building digital presence and driving growth for businesses across multiple industries.
+              I’m a Digital Marketing Professional with <strong className="text-red-400 font-black text-base sm:text-lg border-b border-red-500">2.5+ years of experience</strong> in building digital presence and driving growth for businesses across multiple industries.
             </p>
             <p>
-              I have hands-on experience working with <strong className="text-red-400 font-semibold">Real Estate &amp; Construction Brands</strong>, along with D2C Brands, Salons, Cafés and Service-based Businesses. My real estate experience includes handling social media marketing, content strategy, property-focused campaigns, lead generation, creative content and brand positioning.
+              I have hands-on experience working with <strong className="text-red-300 font-bold">Real Estate &amp; Construction Brands</strong>, along with D2C Brands, Salons, Cafés and Service-based Businesses. My real estate experience includes handling social media marketing, content strategy, property-focused campaigns, lead generation, creative content and brand positioning.
             </p>
           </div>
-          <div className="space-y-2.5">
+          <div className="space-y-3">
             <p>
-              My core expertise includes <strong className="text-white font-bold">Social Media Marketing, Meta Ads, Google Ads, SEO, Content Strategy, Branding, Creative Content, AI-powered Content Creation and Performance Marketing</strong>.
+              My core expertise includes <strong className="text-white font-black text-base sm:text-lg">Social Media Marketing, Meta Ads, Google Ads, SEO, Content Strategy, Branding, Creative Content, AI-powered Content Creation and Performance Marketing</strong>.
             </p>
             <p>
               I believe digital marketing is more than just posting content — it’s about understanding the brand, reaching the right audience and turning attention into measurable business results. I’m constantly exploring new marketing strategies, AI tools and digital trends to create creative, data-driven and result-oriented campaigns that help brands grow.
