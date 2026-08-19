@@ -220,12 +220,12 @@ export default function App() {
       const diffY = touchStartY.current - touchEndY;
       const diffX = touchStartX.current - touchEndX;
 
-      // Require deliberate vertical swipe (> 45px & 1.5x dominant vertical angle)
-      if (Math.abs(diffY) > Math.abs(diffX) * 1.5 && Math.abs(diffY) > 45) {
+      // Require vertical swipe (> 30px & dominant vertical angle)
+      if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 30) {
         if (diffY > 0) {
-          nextSlide();
+          nextSlide(); // Finger swiped UP -> Go to NEXT slide
         } else {
-          prevSlide();
+          prevSlide(); // Finger swiped DOWN -> Go to PREVIOUS slide
         }
       }
     };

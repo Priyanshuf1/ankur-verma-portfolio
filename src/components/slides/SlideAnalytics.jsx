@@ -68,11 +68,15 @@ export default function SlideAnalytics({ onOpenModal }) {
     }
   ];
 
+  const handleContainerScroll = (e) => {
+    e.stopPropagation();
+  };
+
   return (
-    <div className="w-full h-full flex flex-col justify-between items-center px-4 py-3 max-w-7xl mx-auto overflow-hidden">
+    <div className="w-full h-full flex flex-col justify-between items-center px-3 py-2 max-w-7xl mx-auto overflow-hidden">
       {/* Header */}
-      <div className="text-center shrink-0 mt-1 mb-2">
-        <h2 className="font-futuristic text-5xl sm:text-7xl font-black text-[#b30000] tracking-wider uppercase select-none mb-1 drop-shadow-md">
+      <div className="text-center shrink-0 mt-0 mb-2">
+        <h2 className="font-futuristic text-3xl sm:text-6xl md:text-7xl font-black text-[#b30000] tracking-wider uppercase select-none mb-1 drop-shadow-md">
           REACH &amp; PERFORMANCE
         </h2>
         <p className="font-body text-white font-semibold text-xs sm:text-base max-w-3xl mx-auto drop-shadow-sm">
@@ -80,13 +84,17 @@ export default function SlideAnalytics({ onOpenModal }) {
         </p>
       </div>
 
-      {/* 6 Instagram Account Cards Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 w-full my-auto">
+      {/* 6 Instagram Account Cards Grid (Scrollable Container on Mobile/Tablet) */}
+      <div 
+        onWheel={handleContainerScroll}
+        onTouchMove={handleContainerScroll}
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 w-full overflow-y-auto max-h-[calc(100vh-170px)] p-1.5 custom-scrollbar slide-interactive my-auto shrink"
+      >
         {accounts.map((acc) => (
           <TiltCard
             key={acc.id}
-            maxDegree={8}
-            scaleOnHover={1.04}
+            maxDegree={6}
+            scaleOnHover={1.03}
             className="bg-[#0d0406]/95 border border-[#990000]/70 rounded-2xl p-3 shadow-2xl hover:border-red-500 hover:shadow-[0_0_25px_rgba(255,26,26,0.6)] transition-all flex flex-col justify-between"
           >
             {/* Account Title */}
@@ -106,7 +114,7 @@ export default function SlideAnalytics({ onOpenModal }) {
             <div className="grid grid-cols-2 gap-2 my-1">
               <div
                 onClick={() => onOpenModal(acc.profileSrc, `${acc.brand} — Social Media Account Page`)}
-                className="group relative h-40 sm:h-48 bg-black/80 rounded-xl overflow-hidden border border-white/30 hover:border-red-500 cursor-pointer shadow-md flex items-center justify-center"
+                className="group relative h-36 sm:h-44 bg-black/80 rounded-xl overflow-hidden border border-white/30 hover:border-red-500 cursor-pointer shadow-md flex items-center justify-center interactive-control"
                 title="Page 1: Social Media Account Profile"
               >
                 <img
@@ -122,7 +130,7 @@ export default function SlideAnalytics({ onOpenModal }) {
 
               <div
                 onClick={() => onOpenModal(acc.insightsSrc, `${acc.brand} — Reach & Performance Analytics`)}
-                className="group relative h-40 sm:h-48 bg-black/80 rounded-xl overflow-hidden border border-white/30 hover:border-red-500 cursor-pointer shadow-md flex items-center justify-center"
+                className="group relative h-36 sm:h-44 bg-black/80 rounded-xl overflow-hidden border border-white/30 hover:border-red-500 cursor-pointer shadow-md flex items-center justify-center interactive-control"
                 title="Page 2: Reach & Analytics Insights"
               >
                 <img
@@ -153,11 +161,11 @@ export default function SlideAnalytics({ onOpenModal }) {
       </div>
 
       {/* Subtitle Footer */}
-      <div className="mt-2 text-center max-w-2xl mx-auto border-t border-[#990000]/40 pt-2 shrink-0">
-        <h3 className="font-futuristic text-base sm:text-lg text-red-500 font-black mb-0.5 uppercase tracking-wide">
+      <div className="mt-1 text-center max-w-2xl mx-auto border-t border-[#990000]/40 pt-1.5 shrink-0">
+        <h3 className="font-futuristic text-xs sm:text-sm text-red-500 font-black mb-0.5 uppercase tracking-wide">
           What this section communicates
         </h3>
-        <p className="font-body text-xs sm:text-sm text-white font-semibold">
+        <p className="font-body text-[11px] sm:text-xs text-white font-semibold">
           Demonstrates hands-on social media management and performance tracking across multiple business profiles.
         </p>
       </div>
