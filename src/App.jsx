@@ -66,8 +66,7 @@ export default function App() {
       target.closest('select') ||
       target.closest('[role="button"]') ||
       target.closest('.interactive-control') ||
-      target.closest('.modal-overlay') ||
-      target.closest('.slide-interactive')
+      target.closest('.modal-overlay')
     );
   };
 
@@ -185,9 +184,21 @@ export default function App() {
     }
   };
 
-  // High-Precision Mobile Touch & Wheel Protection
+  // High-Precision Mobile Touch & Wheel Protection with Boundary Detection
   useEffect(() => {
     const handleWheel = (e) => {
+      // Internal scroll boundary check
+      const scrollableEl = e.target.closest('.scrollable-slide-content');
+      if (scrollableEl) {
+        const { scrollTop, scrollHeight, clientHeight } = scrollableEl;
+        if (e.deltaY > 0 && scrollTop + clientHeight < scrollHeight - 8) {
+          return; // Let internal element scroll down
+        }
+        if (e.deltaY < 0 && scrollTop > 8) {
+          return; // Let internal element scroll up
+        }
+      }
+
       e.preventDefault();
       const now = Date.now();
       if (isAnimating.current || now - wheelCooldown.current < 350) return;
@@ -206,22 +217,57 @@ export default function App() {
       touchStartX.current = e.touches[0].clientX;
     };
 
+    const handleTouchMove = (e) => {
+      if (isInteractiveTarget(e.target)) return;
+
+      // Prevent mobile browser native pull-to-refresh on vertical swipe down
+      if (e.touches && e.touches.length === 1) {
+        const currentY = e.touches[0].clientY;
+        const currentX = e.touches[0].clientX;
+        const diffY = touchStartY.current - currentY;
+        const diffX = touchStartX.current - currentX;
+
+        const scrollableEl = e.target.closest('.scrollable-slide-content');
+        if (scrollableEl) {
+          const { scrollTop, scrollHeight, clientHeight } = scrollableEl;
+          if (diffY > 0 && scrollTop + clientHeight < scrollHeight - 8) return;
+          if (diffY < 0 && scrollTop > 8) return;
+        }
+
+        if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 10) {
+          if (e.cancelable) {
+            e.preventDefault();
+          }
+        }
+      }
+    };
+
     const handleTouchEnd = (e) => {
       if (isAnimating.current) return;
 
-      // DO NOT trigger slide transitions if tapping an interactive button / link / modal / control!
-      if (isInteractiveTarget(e.target)) {
-        return;
-      }
-
+      // Check if target is inside a scrollable internal element (like SlideAnalytics)
+      const scrollableEl = e.target.closest('.scrollable-slide-content');
       const touchEndY = e.changedTouches[0].clientY;
       const touchEndX = e.changedTouches[0].clientX;
-
       const diffY = touchStartY.current - touchEndY;
       const diffX = touchStartX.current - touchEndX;
 
-      // Require vertical swipe (> 30px & dominant vertical angle)
-      if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 30) {
+      if (scrollableEl) {
+        const { scrollTop, scrollHeight, clientHeight } = scrollableEl;
+        // If swiping finger UP (diffY > 0) and not at bottom boundary -> keep scrolling internally!
+        if (diffY > 0 && scrollTop + clientHeight < scrollHeight - 8) {
+          return;
+        }
+        // If swiping finger DOWN (diffY < 0) and not at top boundary -> keep scrolling internally!
+        if (diffY < 0 && scrollTop > 8) {
+          return;
+        }
+      } else if (isInteractiveTarget(e.target)) {
+        return;
+      }
+
+      // Require vertical swipe (> 25px & dominant vertical angle)
+      if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 25) {
         if (diffY > 0) {
           nextSlide(); // Finger swiped UP -> Go to NEXT slide
         } else {
@@ -243,12 +289,14 @@ export default function App() {
 
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
     window.addEventListener('touchend', handleTouchEnd, { passive: true });
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('keydown', handleKeyDown);
     };

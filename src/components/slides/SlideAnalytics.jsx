@@ -68,14 +68,10 @@ export default function SlideAnalytics({ onOpenModal }) {
     }
   ];
 
-  const handleContainerScroll = (e) => {
-    e.stopPropagation();
-  };
-
   return (
     <div className="w-full h-full flex flex-col justify-between items-center px-3 py-2 max-w-7xl mx-auto overflow-hidden">
       {/* Header */}
-      <div className="text-center shrink-0 mt-0 mb-2">
+      <div className="text-center shrink-0 mt-0 mb-1">
         <h2 className="font-futuristic text-3xl sm:text-6xl md:text-7xl font-black text-[#b30000] tracking-wider uppercase select-none mb-1 drop-shadow-md">
           REACH &amp; PERFORMANCE
         </h2>
@@ -84,21 +80,17 @@ export default function SlideAnalytics({ onOpenModal }) {
         </p>
       </div>
 
-      {/* 6 Instagram Account Cards Grid (Scrollable Container on Mobile/Tablet) */}
-      <div 
-        onWheel={handleContainerScroll}
-        onTouchMove={handleContainerScroll}
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 w-full overflow-y-auto max-h-[calc(100vh-170px)] p-1.5 custom-scrollbar slide-interactive my-auto shrink"
-      >
+      {/* 6 Instagram Account Cards Grid (Scrolls internally until end of content, then transitions slide) */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 w-full overflow-y-auto max-h-[calc(100vh-165px)] p-1 custom-scrollbar scrollable-slide-content my-auto shrink">
         {accounts.map((acc) => (
           <TiltCard
             key={acc.id}
             maxDegree={6}
             scaleOnHover={1.03}
-            className="bg-[#0d0406]/95 border border-[#990000]/70 rounded-2xl p-3 shadow-2xl hover:border-red-500 hover:shadow-[0_0_25px_rgba(255,26,26,0.6)] transition-all flex flex-col justify-between"
+            className="bg-[#0d0406]/95 border border-[#990000]/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl hover:border-red-500 hover:shadow-[0_0_25px_rgba(255,26,26,0.6)] transition-all flex flex-col justify-between"
           >
             {/* Account Title */}
-            <div className="mb-2 border-b border-[#990000]/40 pb-2">
+            <div className="mb-1.5 border-b border-[#990000]/40 pb-1.5">
               <div className="flex items-center gap-1.5">
                 <InstagramIcon />
                 <h3 className="font-futuristic text-xs sm:text-sm font-bold text-white truncate">
@@ -111,10 +103,10 @@ export default function SlideAnalytics({ onOpenModal }) {
             </div>
 
             {/* Phone Screens */}
-            <div className="grid grid-cols-2 gap-2 my-1">
+            <div className="grid grid-cols-2 gap-1.5 my-1">
               <div
                 onClick={() => onOpenModal(acc.profileSrc, `${acc.brand} — Social Media Account Page`)}
-                className="group relative h-36 sm:h-44 bg-black/80 rounded-xl overflow-hidden border border-white/30 hover:border-red-500 cursor-pointer shadow-md flex items-center justify-center interactive-control"
+                className="group relative h-32 sm:h-44 bg-black/80 rounded-xl overflow-hidden border border-white/30 hover:border-red-500 cursor-pointer shadow-md flex items-center justify-center interactive-control"
                 title="Page 1: Social Media Account Profile"
               >
                 <img
@@ -130,7 +122,7 @@ export default function SlideAnalytics({ onOpenModal }) {
 
               <div
                 onClick={() => onOpenModal(acc.insightsSrc, `${acc.brand} — Reach & Performance Analytics`)}
-                className="group relative h-36 sm:h-44 bg-black/80 rounded-xl overflow-hidden border border-white/30 hover:border-red-500 cursor-pointer shadow-md flex items-center justify-center interactive-control"
+                className="group relative h-32 sm:h-44 bg-black/80 rounded-xl overflow-hidden border border-white/30 hover:border-red-500 cursor-pointer shadow-md flex items-center justify-center interactive-control"
                 title="Page 2: Reach & Analytics Insights"
               >
                 <img
@@ -146,12 +138,12 @@ export default function SlideAnalytics({ onOpenModal }) {
             </div>
 
             {/* Metrics & Performance Badge */}
-            <div className="mt-2 pt-2 border-t border-[#990000]/40 bg-[#16070a] rounded-xl p-2 space-y-1">
-              <div className="flex items-center gap-1.5 text-[10px] text-white font-body font-bold">
+            <div className="mt-1.5 pt-1.5 border-t border-[#990000]/40 bg-[#16070a] rounded-xl p-1.5 space-y-0.5">
+              <div className="flex items-center gap-1.5 text-[9.5px] sm:text-[10px] text-white font-body font-bold">
                 <Eye className="w-3.5 h-3.5 text-red-400 shrink-0" />
                 <span className="truncate">{acc.metrics}</span>
               </div>
-              <div className="flex items-center gap-1.5 text-[9.5px] text-emerald-400 font-futuristic font-black">
+              <div className="flex items-center gap-1.5 text-[9px] sm:text-[9.5px] text-emerald-400 font-futuristic font-black">
                 <TrendingUp className="w-3.5 h-3.5 shrink-0" />
                 <span className="truncate">{acc.reach}</span>
               </div>
@@ -161,11 +153,11 @@ export default function SlideAnalytics({ onOpenModal }) {
       </div>
 
       {/* Subtitle Footer */}
-      <div className="mt-1 text-center max-w-2xl mx-auto border-t border-[#990000]/40 pt-1.5 shrink-0">
+      <div className="mt-1 text-center max-w-2xl mx-auto border-t border-[#990000]/40 pt-1 shrink-0">
         <h3 className="font-futuristic text-xs sm:text-sm text-red-500 font-black mb-0.5 uppercase tracking-wide">
           What this section communicates
         </h3>
-        <p className="font-body text-[11px] sm:text-xs text-white font-semibold">
+        <p className="font-body text-[10px] sm:text-xs text-white font-semibold">
           Demonstrates hands-on social media management and performance tracking across multiple business profiles.
         </p>
       </div>
