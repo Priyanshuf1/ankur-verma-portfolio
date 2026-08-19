@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    background-color: #0a0002;
+    color: #ffffff;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+}
+
+/* FullPage Webflow Scroll Snap */
+.fullpage-container {
+  height: 100vh;
+  width: 100vw;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.fullpage-section {
+  height: 100vh;
+  width: 100vw;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Custom Webflow Typography Fonts */
+.font-futuristic {
+  font-family: 'Oswald', 'Impact', 'Trebuchet MS', sans-serif;
+  letter-spacing: 0.05em;
+}
+
+.font-script {
+  font-family: 'Playfair Display', 'Georgia', serif;
+}
+
+.font-body {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Dashed Crimson Border */
+.border-dashed-crimson {
+  border: 1px dashed rgba(239, 68, 68, 0.6);
+}
+
+/* Custom Scrollbar Hide */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/* Webflow 3D Perspective */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* Animated Pulse Glow */
+@keyframes redGlowPulse {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(179, 0, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(239, 68, 68, 0.8);
+  }
+}
+
+.animate-red-glow {
+  animation: redGlowPulse 3s infinite ease-in-out;
+}
