@@ -77,7 +77,7 @@ export default function App() {
     if (!activeEl || isAnimating.current) return;
 
     const { innerWidth, innerHeight } = window;
-    const x = (e.clientX / innerWidth - 0.5) * 6; // Max +-3deg for classy feel
+    const x = (e.clientX / innerWidth - 0.5) * 6;
     const y = (e.clientY / innerHeight - 0.5) * 6;
 
     gsap.to(activeEl, {
@@ -105,10 +105,8 @@ export default function App() {
       return;
     }
 
-    // Reset rotation before transition
     gsap.to(currentEl, { rotateX: 0, rotateY: 0, duration: 0.3 });
 
-    // Set target element visible & z-index
     gsap.set(targetEl, {
       display: 'block',
       zIndex: 30,
@@ -286,9 +284,9 @@ export default function App() {
   return (
     <div 
       onMouseMove={handleMouseMove}
-      className="relative w-screen h-screen overflow-hidden bg-[#070709] text-white select-none perspective-1000"
+      className="relative w-screen h-screen overflow-hidden bg-[#100103] text-white select-none perspective-1000"
     >
-      {/* Background Particle & Classy Atmosphere */}
+      {/* Original PDF Signature Crimson Background */}
       <BackgroundVFX />
 
       {/* Interactive Glowing Cursor Follower */}
