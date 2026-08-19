@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { ZoomIn, Layers } from 'lucide-react';
 
-function GlowingLogoCard({ logo, onClick }) {
+function WebflowGlowingCard({ logo, onClick }) {
   const cardRef = useRef(null);
-  const [mousePos, setMousePos] = useState({ x: -500, y: -500 });
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = (e) => {
@@ -20,53 +20,52 @@ function GlowingLogoCard({ logo, onClick }) {
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        setMousePos({ x: -500, y: -500 });
-      }}
+      onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
-      className="relative rounded-2xl p-[1.5px] overflow-hidden cursor-pointer transition-all duration-300 transform hover:scale-105 group shadow-2xl"
+      className="relative rounded-2xl p-[2px] overflow-hidden cursor-pointer transition-transform duration-300 transform hover:scale-108 group shadow-2xl bg-[#140508]"
     >
-      {/* Webflow Glowing Border Spotlight Effect (Tracks Mouse Position) */}
+      {/* Webflow Glowing Border Spotlight Layer (Tracks Cursor Position) */}
       <div
-        className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-300"
+        className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-300 z-0"
         style={{
-          opacity: isHovered ? 1 : 0.4,
-          background: `radial-gradient(320px circle at ${mousePos.x}px ${mousePos.y}px, rgba(239, 68, 68, 0.95), rgba(153, 0, 0, 0.5) 45%, rgba(60, 10, 15, 0.4) 80%)`
+          opacity: isHovered ? 1 : 0.25,
+          background: isHovered
+            ? `radial-gradient(350px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 30, 30, 1), rgba(239, 68, 68, 0.6) 40%, rgba(120, 0, 0, 0.2) 80%)`
+            : 'rgba(150, 0, 0, 0.3)'
         }}
       />
 
-      {/* Inner Card Body */}
-      <div className="relative w-full h-full bg-[#0d0406]/95 rounded-2xl p-3 flex flex-col items-center justify-between z-10">
-        {/* Webflow Mouse-Following Radial Surface Glow (Underneath Logo Image Frame) */}
+      {/* Inner Dark Card Body */}
+      <div className="relative w-full h-full bg-[#0a0204] rounded-2xl p-3 flex flex-col items-center justify-between z-10 overflow-hidden">
+        {/* Webflow Radial Surface Glow (Directly Under Image) */}
         <div
-          className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-300 z-0"
+          className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-0"
           style={{
-            opacity: isHovered ? 0.4 : 0,
-            background: `radial-gradient(260px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 30, 30, 0.6), transparent 70%)`
+            opacity: isHovered ? 0.75 : 0,
+            background: `radial-gradient(220px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 20, 20, 0.45), rgba(180, 0, 0, 0.15) 50%, transparent 80%)`
           }}
         />
 
-        {/* Logo Image Frame Only with Webflow Cursor Glow Highlight */}
-        <div className="relative z-10 w-full aspect-square flex items-center justify-center p-2.5 bg-white/95 rounded-xl shadow-xl group-hover:bg-white transition-all overflow-hidden border border-white/60">
+        {/* Logo Image Frame - Dark Glassmorphism with Glowing Backdrop */}
+        <div className="relative z-10 w-full aspect-square flex items-center justify-center p-2.5 bg-black/80 rounded-xl shadow-inner border border-red-900/40 group-hover:border-red-500/80 transition-all overflow-hidden">
+          {/* Inner Image Radial Highlight */}
+          <div
+            className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+            style={{
+              opacity: isHovered ? 0.8 : 0,
+              background: `radial-gradient(150px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 40, 40, 0.6), transparent 75%)`
+            }}
+          />
+
           <img
             src={logo.src}
             alt={logo.name}
-            className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-sm"
-          />
-
-          {/* Radial Cursor Glow directly inside image frame */}
-          <div
-            className="absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-300"
-            style={{
-              opacity: isHovered ? 0.35 : 0,
-              background: `radial-gradient(180px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 0, 0, 0.7), transparent 70%)`
-            }}
+            className="relative z-10 w-full h-full object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_4px_12px_rgba(255,0,0,0.5)]"
           />
         </div>
 
-        {/* Card Title & Subtitle */}
-        <div className="relative z-10 w-full text-center pt-2 mt-2 border-t border-[#990000]/30">
+        {/* Title & Subtitle */}
+        <div className="relative z-10 w-full text-center pt-2 mt-2 border-t border-[#990000]/40">
           <h3 className="font-futuristic text-[11px] font-bold text-white group-hover:text-red-400 transition-colors uppercase truncate">
             {logo.name}
           </h3>
@@ -75,9 +74,9 @@ function GlowingLogoCard({ logo, onClick }) {
           </p>
         </div>
 
-        {/* Inspect Hover Badge */}
-        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 text-white font-futuristic text-[10px] uppercase rounded-2xl z-20 pointer-events-none">
-          <ZoomIn className="w-4 h-4 text-red-500" />
+        {/* Zoom Overlay */}
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 text-white font-futuristic text-[10px] uppercase rounded-2xl z-30 pointer-events-none">
+          <ZoomIn className="w-5 h-5 text-red-500 animate-pulse" />
           <span>Inspect Logo</span>
         </div>
       </div>
@@ -143,10 +142,10 @@ export default function SlideLogofolio({ onOpenModal }) {
         </p>
       </div>
 
-      {/* Webflow Glowing Card Effect On Hover Grid Showcase */}
+      {/* Webflow Glowing Card Effect Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4 w-full my-auto">
         {logos.map((logo) => (
-          <GlowingLogoCard
+          <WebflowGlowingCard
             key={logo.id}
             logo={logo}
             onClick={() => onOpenModal(logo.src, logo.name)}
