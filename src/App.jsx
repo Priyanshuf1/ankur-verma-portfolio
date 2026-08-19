@@ -55,6 +55,22 @@ export default function App() {
     });
   }, []);
 
+  // Check if touch target is a button or interactive control
+  const isInteractiveTarget = (target) => {
+    if (!target) return false;
+    return (
+      target.closest('button') ||
+      target.closest('a') ||
+      target.closest('video') ||
+      target.closest('input') ||
+      target.closest('select') ||
+      target.closest('[role="button"]') ||
+      target.closest('.interactive-control') ||
+      target.closest('.modal-overlay') ||
+      target.closest('.slide-interactive')
+    );
+  };
+
   // 60FPS High-Performance Mobile-Optimized Transition Engine (0 Lag, Pure GPU Transform)
   const transitionToSlide = (targetIndex, direction = 'next') => {
     if (isAnimating.current || targetIndex === currentSlide || targetIndex < 0 || targetIndex >= totalSlides) {
@@ -169,7 +185,7 @@ export default function App() {
     }
   };
 
-  // High-Precision Native Touch & Wheel Listeners
+  // High-Precision Mobile Touch & Wheel Protection
   useEffect(() => {
     const handleWheel = (e) => {
       e.preventDefault();
@@ -192,14 +208,20 @@ export default function App() {
 
     const handleTouchEnd = (e) => {
       if (isAnimating.current) return;
+
+      // DO NOT trigger slide transitions if tapping an interactive button / link / modal / control!
+      if (isInteractiveTarget(e.target)) {
+        return;
+      }
+
       const touchEndY = e.changedTouches[0].clientY;
       const touchEndX = e.changedTouches[0].clientX;
 
       const diffY = touchStartY.current - touchEndY;
       const diffX = touchStartX.current - touchEndX;
 
-      // Ensure vertical swipe is intentioned (more vertical than horizontal)
-      if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 30) {
+      // Require deliberate vertical swipe (> 45px & 1.5x dominant vertical angle)
+      if (Math.abs(diffY) > Math.abs(diffX) * 1.5 && Math.abs(diffY) > 45) {
         if (diffY > 0) {
           nextSlide();
         } else {
@@ -255,12 +277,12 @@ export default function App() {
   ];
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-[#0a0506] text-white select-none touch-none">
+    <div className="relative w-screen h-screen overflow-hidden bg-[#0a0506] text-white select-none">
       {/* Exact Fleety Webflow Background Asset */}
       <BackgroundVFX />
 
       {/* Top Webflow Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 h-1.5 bg-black/60 backdrop-blur-md">
+      <div className="fixed top-0 left-0 right-0 z-50 h-1.5 bg-black/60 backdrop-blur-md pointer-events-none">
         <div 
           className="h-full bg-gradient-to-r from-red-700 via-red-500 to-amber-500 transition-all duration-300 ease-out shadow-[0_0_15px_rgba(239,68,68,0.9)]"
           style={{ width: `${((currentSlide + 1) / totalSlides) * 100}%` }}
@@ -283,11 +305,11 @@ export default function App() {
       </div>
 
       {/* Navigation Arrows (Bottom-Right) */}
-      <div className="fixed right-3 sm:right-6 bottom-4 sm:bottom-6 z-40 flex items-center gap-2">
+      <div className="fixed right-3 sm:right-6 bottom-4 sm:bottom-6 z-40 flex items-center gap-2 interactive-control">
         <button
           onClick={prevSlide}
           disabled={currentSlide === 0}
-          className={`p-2.5 rounded-full border backdrop-blur-md transition-all ${
+          className={`p-3 rounded-full border backdrop-blur-md transition-all ${
             currentSlide === 0
               ? 'opacity-25 cursor-not-allowed border-white/10 text-gray-600'
               : 'border-red-600/60 bg-red-950/40 text-white hover:bg-red-600 hover:border-red-500 cursor-pointer shadow-lg active:scale-95'
@@ -299,7 +321,7 @@ export default function App() {
         <button
           onClick={nextSlide}
           disabled={currentSlide === totalSlides - 1}
-          className={`p-2.5 rounded-full border backdrop-blur-md transition-all ${
+          className={`p-3 rounded-full border backdrop-blur-md transition-all ${
             currentSlide === totalSlides - 1
               ? 'opacity-25 cursor-not-allowed border-white/10 text-gray-600'
               : 'border-red-600/60 bg-red-950/40 text-white hover:bg-red-600 hover:border-red-500 cursor-pointer shadow-lg active:scale-95'
