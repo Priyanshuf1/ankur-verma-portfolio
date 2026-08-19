@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Lenis from 'lenis';
 import BackgroundVFX from './components/BackgroundVFX';
 import ImageModal from './components/ImageModal';
 
@@ -34,33 +35,69 @@ export default function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [modalData, setModalData] = useState({ isOpen: false, src: '', alt: '' });
   const containerRef = useRef(null);
+  const lenisRef = useRef(null);
+  const sectionsRef = useRef([]);
 
   const totalSlides = 11;
 
+  // Initialize Lenis Ultra-Smooth Liquid Scroll Engine
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    const lenis = new Lenis({
+      wrapper: container,
+      content: container,
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1.1,
+      touchMultiplier: 2.0,
+      infinite: false,
+    });
+
+    lenisRef.current = lenis;
+
+    let animationFrameId;
+    function raf(time) {
+      lenis.raf(time);
+      animationFrameId = requestAnimationFrame(raf);
+    }
+    animationFrameId = requestAnimationFrame(raf);
 
     const handleScroll = () => {
       const slideHeight = container.clientHeight;
       if (slideHeight > 0) {
         const activeIdx = Math.round(container.scrollTop / slideHeight);
-        if (activeIdx !== currentSlide && activeIdx >= 0 && activeIdx < totalSlides) {
+        if (activeIdx >= 0 && activeIdx < totalSlides) {
           setCurrentSlide(activeIdx);
         }
       }
     };
 
     container.addEventListener('scroll', handleScroll, { passive: true });
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [currentSlide, totalSlides]);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      container.removeEventListener('scroll', handleScroll);
+      lenis.destroy();
+    };
+  }, [totalSlides]);
 
   const goToSlide = (newIndex) => {
     if (newIndex < 0 || newIndex >= totalSlides) return;
-    const container = containerRef.current;
-    if (container) {
-      container.scrollTo({
-        top: newIndex * container.clientHeight,
+    const targetSection = sectionsRef.current[newIndex];
+    if (targetSection && lenisRef.current) {
+      lenisRef.current.scrollTo(targetSection, {
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+      setCurrentSlide(newIndex);
+    } else if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: newIndex * containerRef.current.clientHeight,
         behavior: 'smooth'
       });
       setCurrentSlide(newIndex);
@@ -114,13 +151,17 @@ export default function App() {
         />
       </div>
 
-      {/* Webflow Scroll Snap FullPage Container */}
+      {/* Ultra Smooth Lenis FullPage Container */}
       <div 
         ref={containerRef}
         className="fullpage-container relative z-10 w-full h-full"
       >
         {slides.map((slideComponent, idx) => (
-          <section key={idx} className="fullpage-section w-full h-full p-2 sm:p-4">
+          <section 
+            key={idx} 
+            ref={(el) => (sectionsRef.current[idx] = el)}
+            className="fullpage-section w-full h-full p-2 sm:p-4"
+          >
             <div className="w-full h-full max-w-7xl mx-auto flex flex-col justify-center items-center">
               {slideComponent}
             </div>
