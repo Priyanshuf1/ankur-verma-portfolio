@@ -22,7 +22,7 @@ function WebflowGlowingCard({ logo, onClick }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
-      className="relative rounded-2xl p-[2px] overflow-hidden cursor-pointer transition-transform duration-300 transform hover:scale-108 group shadow-2xl bg-[#140508]"
+      className="relative rounded-2xl p-[2px] overflow-hidden cursor-pointer transition-transform duration-300 transform hover:scale-108 group shadow-2xl bg-[#140508] font-poppins"
     >
       {/* Webflow Glowing Border Spotlight Layer (Tracks Cursor Position) */}
       <div
@@ -63,18 +63,15 @@ function WebflowGlowingCard({ logo, onClick }) {
           />
         </div>
 
-        {/* Title & Subtitle - High Contrast Bold White */}
-        <div className="relative z-10 w-full text-center pt-2 mt-2 border-t border-[#990000]/50">
-          <h3 className="font-futuristic text-[11px] font-bold text-white group-hover:text-red-400 transition-colors uppercase truncate">
+        {/* Company / Logo Name — Sharp Poppins ExtraBold */}
+        <div className="relative z-10 w-full text-center pt-2.5 mt-2 border-t border-[#990000]/50">
+          <h3 className="font-poppins text-xs font-extrabold text-white group-hover:text-red-400 transition-colors uppercase tracking-wider truncate">
             {logo.name}
           </h3>
-          <p className="font-body text-[10px] font-bold text-gray-200 mt-0.5 truncate">
-            {logo.subtitle}
-          </p>
         </div>
 
         {/* Zoom Overlay */}
-        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 text-white font-futuristic text-[10px] font-bold uppercase rounded-2xl z-30 pointer-events-none">
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 text-white font-poppins text-xs font-extrabold uppercase rounded-2xl z-30 pointer-events-none">
           <ZoomIn className="w-5 h-5 text-red-500 animate-pulse" />
           <span>Inspect Logo</span>
         </div>
@@ -88,55 +85,48 @@ export default function SlideLogofolio({ onOpenModal }) {
     {
       id: 1,
       name: 'Book Your Digital Story',
-      subtitle: 'PD Monogram Brand Identity',
       src: '/assets/logo_new_enhanced_1.png'
     },
     {
       id: 2,
       name: 'B Luxury Salon',
-      subtitle: 'BL Monogram Luxury Identity',
       src: '/assets/logo_new_enhanced_2.png'
     },
     {
       id: 3,
       name: 'CS / EC Monogram',
-      subtitle: 'Modern Minimal Monogram',
       src: '/assets/logo_new_enhanced_3.png'
     },
     {
       id: 4,
       name: 'Tabs 19 Studio',
-      subtitle: 'TC Unisex Salon Identity',
       src: '/assets/logo_new_enhanced_4.png'
     },
     {
       id: 5,
       name: 'GlowX Skincare',
-      subtitle: 'D2C Skincare Brand Identity',
       src: '/assets/logo_new_enhanced_5.png'
     },
     {
       id: 6,
       name: 'Spicy Affair Catering',
-      subtitle: 'Gourmet Hospitality Identity',
       src: '/assets/logo_new_enhanced_6.png'
     },
     {
       id: 7,
       name: 'HomeArchs Construction',
-      subtitle: 'Architectural Construction Logo',
       src: '/assets/logo_new_enhanced_7.png'
     }
   ];
 
   return (
-    <div className="w-full h-full flex flex-col justify-between items-center px-4 py-3 max-w-7xl mx-auto overflow-hidden">
+    <div className="w-full h-full flex flex-col justify-between items-center px-4 py-3 max-w-7xl mx-auto overflow-hidden font-poppins">
       {/* Header */}
       <div className="text-center shrink-0 mt-1 mb-2">
-        <h2 className="font-futuristic text-5xl sm:text-7xl font-black text-[#b30000] tracking-wider uppercase select-none mb-1 drop-shadow-md">
-          LOGOFOILO
+        <h2 className="font-poppins text-4xl sm:text-7xl font-extrabold text-[#b30000] tracking-tight uppercase select-none mb-1 drop-shadow-md">
+          LOGOFOLIO
         </h2>
-        <p className="font-body text-white font-semibold text-xs sm:text-base max-w-3xl mx-auto drop-shadow-sm">
+        <p className="font-poppins text-white font-medium text-xs sm:text-base max-w-3xl mx-auto drop-shadow-sm">
           A curated showcase of distinctive logos crafted to create memorable and impactful brand identities.
         </p>
       </div>
@@ -154,10 +144,10 @@ export default function SlideLogofolio({ onOpenModal }) {
 
       {/* Subtitle Footer */}
       <div className="mt-2 text-center max-w-xl mx-auto border-t border-[#990000]/40 pt-2 shrink-0">
-        <h3 className="font-futuristic text-base sm:text-lg text-red-500 font-black mb-0.5 flex items-center justify-center gap-2 uppercase tracking-wide">
+        <h3 className="font-poppins text-xs sm:text-sm text-red-500 font-black mb-0.5 flex items-center justify-center gap-2 uppercase tracking-wide">
           <Layers className="w-4 h-4" /> Brand Identity &amp; Logo Design
         </h3>
-        <p className="font-body text-xs sm:text-sm text-white font-semibold">
+        <p className="font-poppins text-xs sm:text-sm text-white font-semibold">
           Distinctive logo concepts created to elevate brand identity across digital, salon, and studio spaces.
         </p>
       </div>

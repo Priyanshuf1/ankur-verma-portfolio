@@ -71,14 +71,14 @@ export default function SlideAnalytics({ onOpenModal }) {
     }
   ];
 
-  // Auto-scroll loop when not paused
+  // Faster Auto-scroll loop when not paused
   useEffect(() => {
     let animationFrameId;
     
     const autoScroll = () => {
       if (!isPaused && scrollContainerRef.current) {
         const container = scrollContainerRef.current;
-        container.scrollLeft += 1.2; // Smooth auto-slide velocity
+        container.scrollLeft += 3.2; // Faster, dynamic auto-slide velocity
         
         // Loop back seamlessly
         if (container.scrollLeft >= container.scrollWidth / 2) {
@@ -94,13 +94,13 @@ export default function SlideAnalytics({ onOpenModal }) {
 
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: -320, behavior: 'smooth' });
+      scrollContainerRef.current.scrollBy({ left: -340, behavior: 'smooth' });
     }
   };
 
   const scrollRight = () => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 320, behavior: 'smooth' });
+      scrollContainerRef.current.scrollBy({ left: 340, behavior: 'smooth' });
     }
   };
 
@@ -148,7 +148,7 @@ export default function SlideAnalytics({ onOpenModal }) {
         {/* Pause/Play Controls Badge */}
         <div className="absolute top-0 right-4 z-20 hidden sm:flex items-center gap-2 bg-red-950/80 border border-red-600/60 px-3 py-1 rounded-full text-[11px] text-white font-bold backdrop-blur-md">
           {isPaused ? <Pause className="w-3 h-3 text-amber-400" /> : <Play className="w-3 h-3 text-emerald-400 animate-pulse" />}
-          <span>{isPaused ? 'PAUSED' : 'AUTO MOVING'}</span>
+          <span>{isPaused ? 'PAUSED' : 'FAST AUTO MOVING'}</span>
         </div>
 
         {/* Moving Track */}
