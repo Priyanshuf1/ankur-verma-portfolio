@@ -6,26 +6,27 @@ export default function SlideLogofolio({ onOpenModal }) {
   const [isPaused, setIsPaused] = useState(false);
   const scrollContainerRef = useRef(null);
 
+  // Exact 1-to-1 Mapping as requested in user screenshot
   const logos = [
     {
       id: 1,
       name: 'B Luxury Salon',
-      src: '/assets/logo_new_enhanced_2.png'
+      src: '/assets/logo_new_enhanced_1.png'
     },
     {
       id: 2,
       name: 'EOS Salon',
-      src: '/assets/logo_new_enhanced_3.png'
+      src: '/assets/logo_new_enhanced_2.png'
     },
     {
       id: 3,
-      name: 'Tabs 19 Salon',
-      src: '/assets/logo_new_enhanced_4.png'
+      name: 'Tabs 19 Studio',
+      src: '/assets/logo_new_enhanced_3.png'
     },
     {
       id: 4,
       name: 'Book Your Digital Story',
-      src: '/assets/logo_new_enhanced_1.png'
+      src: '/assets/logo_new_enhanced_4.png'
     },
     {
       id: 5,
@@ -44,16 +45,16 @@ export default function SlideLogofolio({ onOpenModal }) {
     }
   ];
 
-  // Auto-scroll loop when not paused
+  // 60FPS Continuous Auto-Scroll Engine
   useEffect(() => {
     let animationFrameId;
     
     const autoScroll = () => {
       if (!isPaused && scrollContainerRef.current) {
         const container = scrollContainerRef.current;
-        container.scrollLeft += 2.2; // Smooth dynamic auto-slide velocity
+        container.scrollLeft += 2.0; // Dynamic 60fps auto-scroll velocity
         
-        // Loop back seamlessly
+        // Loop back seamlessly when halfway through duplicated items
         if (container.scrollLeft >= container.scrollWidth / 2) {
           container.scrollLeft = 0;
         }
@@ -77,8 +78,8 @@ export default function SlideLogofolio({ onOpenModal }) {
     }
   };
 
-  // Duplicate items for seamless continuous marquee looping
-  const displayLogos = [...logos, ...logos];
+  // Duplicate items for seamless infinite auto-scroll loop
+  const displayLogos = [...logos, ...logos, ...logos];
 
   return (
     <div className="w-full h-full flex flex-col justify-between items-center px-2 sm:px-4 py-2 sm:py-3 max-w-7xl mx-auto overflow-hidden font-poppins select-none">
@@ -118,7 +119,7 @@ export default function SlideLogofolio({ onOpenModal }) {
           <ChevronRight className="w-6 h-6 text-white" />
         </button>
 
-        {/* Status Badge */}
+        {/* Status Indicator Badge */}
         <div className="absolute top-0 right-4 z-20 hidden sm:flex items-center gap-2 bg-red-950/80 border border-red-600/60 px-3 py-1 rounded-full text-[11px] text-white font-bold backdrop-blur-md">
           {isPaused ? <Pause className="w-3 h-3 text-amber-400" /> : <Play className="w-3 h-3 text-emerald-400 animate-pulse" />}
           <span>{isPaused ? 'PAUSED' : 'AUTO SCROLLING'}</span>
@@ -138,12 +139,12 @@ export default function SlideLogofolio({ onOpenModal }) {
                 className="bg-[#0d0406]/95 border border-[#990000]/70 rounded-2xl p-3 shadow-2xl hover:border-red-500 hover:shadow-[0_0_30px_rgba(255,26,26,0.6)] transition-all flex flex-col items-center justify-between h-full group cursor-pointer"
                 onClick={() => onOpenModal(logo.src, logo.name)}
               >
-                {/* Zoomed Logo Frame (Increased image scale & padding for bold visibility) */}
-                <div className="relative w-full aspect-square flex items-center justify-center p-1.5 bg-black/90 rounded-xl border border-red-900/50 group-hover:border-red-500 transition-all overflow-hidden shadow-inner interactive-control">
+                {/* Logo Frame (Zoomed image styling with inner shadow & hover scale) */}
+                <div className="relative w-full aspect-square flex items-center justify-center p-2 bg-black/90 rounded-xl border border-red-900/50 group-hover:border-red-500 transition-all overflow-hidden shadow-inner interactive-control">
                   <img
                     src={logo.src}
                     alt={logo.name}
-                    className="w-full h-full object-contain transform scale-115 group-hover:scale-125 transition-transform duration-300 drop-shadow-[0_4px_15px_rgba(255,0,0,0.6)]"
+                    className="w-full h-full object-contain transform scale-110 group-hover:scale-125 transition-transform duration-300 drop-shadow-[0_4px_15px_rgba(255,0,0,0.6)]"
                   />
                   {/* Zoom Overlay */}
                   <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 text-white font-poppins text-[10px] font-extrabold uppercase rounded-xl">
@@ -152,7 +153,7 @@ export default function SlideLogofolio({ onOpenModal }) {
                   </div>
                 </div>
 
-                {/* Company / Logo Name (Poppins ExtraBold) */}
+                {/* Company / Logo Name (Poppins ExtraBold - 100% Crisp) */}
                 <div className="w-full text-center pt-2.5 mt-2 border-t border-[#990000]/50">
                   <h3 className="font-poppins text-xs sm:text-sm font-extrabold text-white group-hover:text-red-400 transition-colors uppercase tracking-wider truncate">
                     {logo.name}
