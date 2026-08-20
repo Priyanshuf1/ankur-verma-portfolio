@@ -12,6 +12,7 @@ import SlideSocialMedia from './components/slides/SlideSocialMedia';
 import SlideLogofolio from './components/slides/SlideLogofolio';
 import SlideAnalytics from './components/slides/SlideAnalytics';
 import SlideMetaAds from './components/slides/SlideMetaAds';
+import SlideWordPress from './components/slides/SlideWordPress';
 import SlideVideoProduction from './components/slides/SlideVideoProduction';
 import SlideContact from './components/slides/SlideContact';
 
@@ -27,7 +28,7 @@ export default function App() {
   const wheelCooldown = useRef(0);
   const slideRefs = useRef([]);
 
-  const totalSlides = 11;
+  const totalSlides = 12;
 
   // Initialize Hardware-Accelerated Mobile-First Slide Stack
   useEffect(() => {
@@ -318,6 +319,7 @@ export default function App() {
     <SlideLogofolio onOpenModal={handleOpenModal} />,
     <SlideAnalytics onOpenModal={handleOpenModal} />,
     <SlideMetaAds onOpenModal={handleOpenModal} />,
+    <SlideWordPress onOpenModal={handleOpenModal} />,
     <SlideVideoProduction />,
     <SlideContact />
   ];
