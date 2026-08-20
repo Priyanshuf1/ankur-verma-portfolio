@@ -1,6 +1,8 @@
-node_modules
+# Vercel Ignore File
 SOCIAL MEDIA
 certificate
 reach ss
 logo folio and 1
 .git
+.vscode
+*.mov
