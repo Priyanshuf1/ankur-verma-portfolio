@@ -37,7 +37,7 @@ export default function SlideContact() {
       {/* Main Contact Card */}
       <div className="my-auto w-full max-w-4xl bg-[#0e0407]/95 border-2 border-red-600/80 rounded-3xl p-4 sm:p-8 shadow-2xl backdrop-blur-md flex flex-col items-center gap-3 sm:gap-5 interactive-control overflow-y-auto max-h-[calc(100vh-170px)] custom-scrollbar">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full text-left">
-          {/* Email 1 */}
+          {/* Email */}
           <a 
             href="mailto:sv8417070@gmail.com"
             className="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl bg-black/90 border border-red-900/60 hover:border-red-500 transition-all group cursor-pointer"
@@ -47,7 +47,7 @@ export default function SlideContact() {
             </div>
             <div className="overflow-hidden">
               <span className="font-poppins text-[11px] font-extrabold text-red-400 uppercase tracking-wider block mb-0.5">
-                PRIMARY GMAIL
+                EMAIL ME
               </span>
               <span className="font-poppins text-xs sm:text-sm font-bold text-white truncate block group-hover:text-red-300">
                 sv8417070@gmail.com
@@ -55,20 +55,22 @@ export default function SlideContact() {
             </div>
           </a>
 
-          {/* Email 2 */}
+          {/* Website */}
           <a 
-            href="mailto:ankurverma2022.av@gmail.com"
+            href={websiteUrl}
+            target="_blank"
+            rel="noreferrer"
             className="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl bg-black/90 border border-red-900/60 hover:border-red-500 transition-all group cursor-pointer"
           >
             <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-red-950/90 border border-red-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-              <Mail className="w-5 h-5 text-red-500" />
+              <Globe className="w-5 h-5 text-red-500" />
             </div>
             <div className="overflow-hidden">
               <span className="font-poppins text-[11px] font-extrabold text-red-400 uppercase tracking-wider block mb-0.5">
-                SECONDARY GMAIL
+                OFFICIAL AGENCY WEBSITE
               </span>
-              <span className="font-poppins text-xs sm:text-sm font-bold text-white truncate block group-hover:text-red-300">
-                ankurverma2022.av@gmail.com
+              <span className="font-poppins text-xs sm:text-sm font-bold text-white truncate block group-hover:text-red-300 flex items-center gap-1">
+                www.globallogicmedia.com <ExternalLink className="w-3 h-3 text-red-400 shrink-0" />
               </span>
             </div>
           </a>
@@ -109,29 +111,6 @@ export default function SlideContact() {
             </div>
           </a>
         </div>
-
-        {/* Website */}
-        <a 
-          href={websiteUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-black/90 border border-red-900/60 hover:border-red-500 transition-all group cursor-pointer w-full"
-        >
-          <div className="flex items-center gap-3.5 overflow-hidden">
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-red-950/90 border border-red-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-              <Globe className="w-5 h-5 text-red-500" />
-            </div>
-            <div className="overflow-hidden text-left">
-              <span className="font-poppins text-[11px] font-extrabold text-red-400 uppercase tracking-wider block mb-0.5">
-                OFFICIAL AGENCY WEBSITE
-              </span>
-              <span className="font-poppins text-xs sm:text-sm font-bold text-white truncate block group-hover:text-red-300">
-                www.globallogicmedia.com
-              </span>
-            </div>
-          </div>
-          <ExternalLink className="w-4 h-4 text-red-400 shrink-0 ml-2" />
-        </a>
 
         {/* Location */}
         <div className="flex items-center justify-center gap-2.5 p-3 rounded-2xl bg-black/90 border border-red-900/60 w-full">
