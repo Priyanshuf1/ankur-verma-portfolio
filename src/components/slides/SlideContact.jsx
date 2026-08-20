@@ -23,31 +23,33 @@ export default function SlideContact() {
   const websiteUrl = "https://www.globallogicmedia.com";
 
   return (
-    <div className="w-full h-full flex flex-col justify-between items-center text-center px-4 py-4 sm:py-6 max-w-5xl mx-auto overflow-hidden">
+    <div className="w-full h-full flex flex-col justify-between items-center text-center px-4 py-4 sm:py-6 max-w-5xl mx-auto overflow-hidden font-poppins">
       {/* Header */}
       <div className="shrink-0 mt-1">
-        <h2 className="font-futuristic text-4xl sm:text-7xl md:text-8xl font-black text-[#b30000] tracking-wider uppercase select-none drop-shadow-md">
+        <h2 className="font-poppins text-4xl sm:text-7xl md:text-8xl font-extrabold text-[#b30000] tracking-tight uppercase select-none drop-shadow-md">
           GET IN TOUCH
         </h2>
-        <p className="font-body text-white font-semibold text-xs sm:text-xl max-w-2xl mx-auto mt-1 sm:mt-2 drop-shadow-sm">
+        <p className="font-poppins text-white font-medium text-xs sm:text-xl max-w-2xl mx-auto mt-1 sm:mt-2 drop-shadow-sm">
           Let’s connect to build data-driven marketing campaigns and scale your brand.
         </p>
       </div>
 
       {/* Main Contact Card */}
       <div className="my-auto w-full max-w-3xl bg-[#0e0407]/95 border-2 border-red-600/80 rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-md flex flex-col items-center gap-4 sm:gap-6 interactive-control">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full text-left">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4 w-full text-left">
           {/* Email */}
           <a 
             href="mailto:sv8417070@gmail.com"
-            className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-black/80 border border-red-900/60 hover:border-red-500 transition-all group cursor-pointer"
+            className="flex items-center gap-3.5 p-4 rounded-2xl bg-black/90 border border-red-900/60 hover:border-red-500 transition-all group cursor-pointer"
           >
             <div className="w-11 h-11 rounded-full bg-red-950/90 border border-red-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
               <Mail className="w-5 h-5 text-red-500" />
             </div>
             <div className="overflow-hidden">
-              <span className="font-futuristic text-[10px] font-bold text-red-400 uppercase tracking-widest block">Email Me</span>
-              <span className="font-body text-xs sm:text-sm font-bold text-white truncate block group-hover:text-red-300">
+              <span className="font-poppins text-xs font-extrabold text-red-400 uppercase tracking-wider block mb-0.5">
+                EMAIL ME
+              </span>
+              <span className="font-poppins text-xs sm:text-sm font-bold text-white truncate block group-hover:text-red-300">
                 sv8417070@gmail.com
               </span>
             </div>
@@ -58,14 +60,16 @@ export default function SlideContact() {
             href={websiteUrl}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-black/80 border border-red-900/60 hover:border-red-500 transition-all group cursor-pointer"
+            className="flex items-center gap-3.5 p-4 rounded-2xl bg-black/90 border border-red-900/60 hover:border-red-500 transition-all group cursor-pointer"
           >
             <div className="w-11 h-11 rounded-full bg-red-950/90 border border-red-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
               <Globe className="w-5 h-5 text-red-500" />
             </div>
             <div className="overflow-hidden">
-              <span className="font-futuristic text-[10px] font-bold text-red-400 uppercase tracking-widest block">Official Agency Website</span>
-              <span className="font-body text-xs sm:text-sm font-bold text-white truncate block group-hover:text-red-300 flex items-center gap-1">
+              <span className="font-poppins text-xs font-extrabold text-red-400 uppercase tracking-wider block mb-0.5">
+                OFFICIAL AGENCY WEBSITE
+              </span>
+              <span className="font-poppins text-xs sm:text-sm font-bold text-white truncate block group-hover:text-red-300 flex items-center gap-1">
                 www.globallogicmedia.com <ExternalLink className="w-3 h-3 text-red-400 shrink-0" />
               </span>
             </div>
@@ -74,14 +78,16 @@ export default function SlideContact() {
           {/* Phone Number 1 */}
           <a 
             href="tel:+917570060896"
-            className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-black/80 border border-red-900/60 hover:border-red-500 transition-all group cursor-pointer"
+            className="flex items-center gap-3.5 p-4 rounded-2xl bg-black/90 border border-red-900/60 hover:border-red-500 transition-all group cursor-pointer"
           >
             <div className="w-11 h-11 rounded-full bg-red-950/90 border border-red-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
               <Phone className="w-5 h-5 text-red-500" />
             </div>
             <div>
-              <span className="font-futuristic text-[10px] font-bold text-red-400 uppercase tracking-widest block">Call / WhatsApp Primary</span>
-              <span className="font-body text-xs sm:text-sm font-bold text-white block group-hover:text-red-300">
+              <span className="font-poppins text-xs font-extrabold text-red-400 uppercase tracking-wider block mb-0.5">
+                CALL / WHATSAPP PRIMARY
+              </span>
+              <span className="font-poppins text-xs sm:text-sm font-bold text-white block group-hover:text-red-300">
                 +91 7570060896
               </span>
             </div>
@@ -90,14 +96,16 @@ export default function SlideContact() {
           {/* Phone Number 2 */}
           <a 
             href="tel:+919208111603"
-            className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-black/80 border border-red-900/60 hover:border-red-500 transition-all group cursor-pointer"
+            className="flex items-center gap-3.5 p-4 rounded-2xl bg-black/90 border border-red-900/60 hover:border-red-500 transition-all group cursor-pointer"
           >
             <div className="w-11 h-11 rounded-full bg-red-950/90 border border-red-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
               <Phone className="w-5 h-5 text-red-500" />
             </div>
             <div>
-              <span className="font-futuristic text-[10px] font-bold text-red-400 uppercase tracking-widest block">Call / WhatsApp Secondary</span>
-              <span className="font-body text-xs sm:text-sm font-bold text-white block group-hover:text-red-300">
+              <span className="font-poppins text-xs font-extrabold text-red-400 uppercase tracking-wider block mb-0.5">
+                CALL / WHATSAPP SECONDARY
+              </span>
+              <span className="font-poppins text-xs sm:text-sm font-bold text-white block group-hover:text-red-300">
                 +91 9208111603
               </span>
             </div>
@@ -105,9 +113,9 @@ export default function SlideContact() {
         </div>
 
         {/* Location */}
-        <div className="flex items-center justify-center gap-2.5 p-3 rounded-2xl bg-black/80 border border-red-900/60 w-full">
+        <div className="flex items-center justify-center gap-2.5 p-3.5 rounded-2xl bg-black/90 border border-red-900/60 w-full">
           <MapPin className="w-5 h-5 text-red-500 shrink-0" />
-          <span className="font-body text-xs sm:text-sm font-bold text-white uppercase tracking-wide">
+          <span className="font-poppins text-xs sm:text-sm font-bold text-white uppercase tracking-wider">
             Location: Lucknow, Uttar Pradesh, India (Available Globally)
           </span>
         </div>
@@ -118,7 +126,7 @@ export default function SlideContact() {
             href={linkedinUrl}
             target="_blank"
             rel="noreferrer"
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 font-futuristic text-xs sm:text-sm font-black text-white bg-red-950/90 border border-red-600 px-5 py-3 rounded-full hover:bg-red-600 transition-all shadow-lg cursor-pointer"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 font-poppins text-xs sm:text-sm font-black text-white bg-red-950/90 border border-red-600 px-5 py-3 rounded-full hover:bg-red-600 transition-all shadow-lg cursor-pointer tracking-wider"
           >
             <LinkedinIcon />
             <span>LINKEDIN</span>
@@ -127,7 +135,7 @@ export default function SlideContact() {
             href={instagramUrl}
             target="_blank"
             rel="noreferrer"
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 font-futuristic text-xs sm:text-sm font-black text-white bg-red-950/90 border border-red-600 px-5 py-3 rounded-full hover:bg-red-600 transition-all shadow-lg cursor-pointer"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 font-poppins text-xs sm:text-sm font-black text-white bg-red-950/90 border border-red-600 px-5 py-3 rounded-full hover:bg-red-600 transition-all shadow-lg cursor-pointer tracking-wider"
           >
             <InstagramIcon />
             <span>INSTAGRAM</span>
@@ -137,7 +145,7 @@ export default function SlideContact() {
 
       {/* Footer copyright */}
       <div className="shrink-0 mb-1">
-        <p className="font-body text-xs sm:text-sm text-white font-bold uppercase tracking-widest">
+        <p className="font-poppins text-xs sm:text-sm text-gray-300 font-semibold uppercase tracking-widest">
           © {new Date().getFullYear()} ANKUR VERMA • GLOBAL LOGIC MEDIA
         </p>
       </div>
